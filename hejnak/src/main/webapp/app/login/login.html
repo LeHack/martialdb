@@ -1,0 +1,13 @@
+<div id="login-form" class="width-33-percent" ng-controller="LoginController">
+    <span class="logo"></span>
+    <form id="login" class="form-inline" role="form" ng-submit="loginAction()">
+        <!--  <li class="error">Your Account has been locked.<br>Please contact your administrator.</li> -->
+        <h5>Please sign-in</h5>
+        <label for="user">Login:</label>
+        <input type="text" class="form-control" id="user" name="user" placeholder="Enter user" ng-model="login">
+        <label for="pass">Password:</label>
+        <input type="password" class="form-control" id="pass" name="pass" placeholder="Password" ng-model="password">
+        <button type="submit" class="btn btn-primary">Log in</button>
+        <div style="clear:both;"></div>
+    </form>
+</div>

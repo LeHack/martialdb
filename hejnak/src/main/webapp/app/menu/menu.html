@@ -1,0 +1,31 @@
+<nav role="navigation" class="navbar-default">
+    <div class="navbar-header">
+        <span class="navbar-brand">{{appinfo.shortName}}</span>
+
+
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse navbar-menu">
+          <i ng-show="$links != null" class="logo"></i>
+          <ul ng-repeat="lin in $links" class="nav navbar-nav">
+            <li ng-repeat="link in lin" class="{{link.cssClass}}">
+                <a ng-if="link.url" href="#/{{link.url}}">{{link.name}}</a>
+                <a ng-if="!link.url" class="{{link.sub && 'dropdown-toggle' || ''}}"
+                    data-toggle="{{link.sub && 'dropdown' || ''}}">{{link.name}}
+                    <b ng-show="link.sub" class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" ng-show="link.sub">
+                    <li ng-repeat="subItem in link.sub">
+                        <a href="#/{{subItem.url}}">{{subItem.name}}</a>
+                    </li>
+                </ul>
+            </li>
+          </ul>
+        <ul class="nav navbar-nav navbar-right" ng-switch on="isObject(username)" ng-show="isUsernameDefined()">
+            <li ng-switch-when="false">&nbsp;</li>
+            <li ng-switch-default><span>User:&nbsp;{{username}}&nbsp;<a href='#/logout'>(Logout)</a></span> </li>
+        </ul>
+
+        </div>
+        
+    </div>
+</nav>

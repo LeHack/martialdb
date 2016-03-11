@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" id="ng-app" ng-app="app">
+<head>
+<meta content="IE=100" http-equiv="X-UA-Compatible">
+<meta charset="utf-8">
+
+<title></title>
+
+<script src="js/bootstrap.js"></script>
+<script src="js/angular/angular.js"></script>
+<script src="js/angular-route/angular-route.js"></script>
+<script src="js/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="js/angular-xeditable/xeditable.min.js"></script>
+
+
+<link rel="stylesheet" href="css/bootstrap.css" />
+<link rel="stylesheet" href="css/xeditable.css" />
+<!--<link rel="stylesheet" href="css/metamodel.css" />-->
+<link rel="stylesheet" href="css/app.css" />
+
+
+
+<!-- project modules -->
+<script src="app/app.js"></script>
+<script src="app/feedback/feedback-provider.js"></script>
+<script src="app/logout/logout.js"></script>
+<script src="app/login/login.js"></script>
+<script src="app/login/authservice.js"></script>
+
+</head>
+
+<body id="body">
+	<div id="content">
+		<ng-include src="content.menu"></ng-include>
+		<div id="app-content" class="container col-moto-12">
+			<div class="row">
+				<div>
+					<ng-include src="'app/feedback/feedback.html'"></ng-include>
+					<div id="center">
+						<div ng-view></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer ng-include="'app/footer/footer.html'"></footer>
+</body>
+</html>
