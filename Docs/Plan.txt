@@ -1,0 +1,13 @@
+1. uzupełnienie wizji projektowej:
+  - środowisko systemu (system zamknięty, bez zewnętrznych zależności)
+  - opis opcjonalnej procedury migracji (raczej nastawienie na nowych użytkowników)
+  - zaznaczenie, że do bazy dostęp mają tylko użytkownicy wewnętrzni
+  - rozbudowanie analizy ryzyka
+2. uzupełnienie brakujących dokumentów:
+  - wizja GUI (szkic)
+  - plan prowadzenia projektu (ten dokument)
+3. spisanie wymagan funkcjonalnych/niefunkcjonalnych
+4. zaprojektowanie nowej bazy danych
+5. zaprojektowanie nowego modelu danych (Java)
+6. zaprojektowanie formatek (formularze)
+7. ...?
