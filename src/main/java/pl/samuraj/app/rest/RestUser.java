@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial creation.
  * -------------------------------------------------------------------------------
  */
-package pl.hejnak.app.rest;
+package pl.samuraj.app.rest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -28,7 +28,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
-import pl.hejnak.app.rest.session.webSession;
+import pl.samuraj.app.rest.session.webSession;
 
 @Path("/user")
 public class RestUser {

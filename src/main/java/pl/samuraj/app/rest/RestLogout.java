@@ -15,7 +15,7 @@
  * -----------------------------------------------------------------------------
  */
 
-package pl.hejnak.app.rest;
+package pl.samuraj.app.rest;
 
 
 import javax.naming.NamingException;
@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 
-import pl.hejnak.app.rest.session.webSession;
+import pl.samuraj.app.rest.session.webSession;
 
 @Path("/logout")
 public class RestLogout {

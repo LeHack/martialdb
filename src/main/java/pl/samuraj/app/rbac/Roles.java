@@ -15,7 +15,7 @@
  *  -----------------------------------------------------------------------------
  */
 
-package pl.hejnak.app.rbac;
+package pl.samuraj.app.rbac;
 
 import java.util.Collection;
 import java.util.EnumSet;

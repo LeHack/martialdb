@@ -14,9 +14,8 @@
  * 08-Mar-2016  Initial creation.
  * -------------------------------------------------------------------------------
  */
-package pl.hejnak.app.rest.session;
+package pl.samuraj.app.rest.session;
 
-import pl.hejnak.app.rbac.Roles;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -28,6 +27,8 @@ import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSCredential;
+
+import pl.samuraj.app.rbac.Roles;
 
 public class webAuth implements Serializable {
 

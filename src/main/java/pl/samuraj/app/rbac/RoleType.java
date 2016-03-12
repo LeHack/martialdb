@@ -14,7 +14,7 @@
  *  08-Mar-2014  Initial
  *  ----------------------------------------------------------------------------
  */
-package pl.hejnak.app.rbac;
+package pl.samuraj.app.rbac;
 
 public enum RoleType {
     USERS,

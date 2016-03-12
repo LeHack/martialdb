@@ -14,11 +14,11 @@
  * 08 Mar 2016  Initial creation
  * -----------------------------------------------------------------------------
  */
-package pl.hejnak.app.rest;
+package pl.samuraj.app.rest;
 
-import pl.hejnak.app.rbac.RoleType;
-import pl.hejnak.app.rbac.Roles;
-import pl.hejnak.app.rest.session.webSession;
+import pl.samuraj.app.rbac.RoleType;
+import pl.samuraj.app.rbac.Roles;
+import pl.samuraj.app.rest.session.webSession;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;

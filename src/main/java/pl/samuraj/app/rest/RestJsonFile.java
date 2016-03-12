@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial creation.
  * -----------------------------------------------------------------------------
  */
-package pl.hejnak.app.rest;
+package pl.samuraj.app.rest;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import org.apache.log4j.Logger;
 
-import pl.hejnak.app.rest.session.webSession;
+import pl.samuraj.app.rest.session.webSession;
 
 @Path("/")
 public class RestJsonFile {

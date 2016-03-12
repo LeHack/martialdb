@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial
  * -----------------------------------------------------------------------------
  */
-package pl.hejnak.app.rest;
+package pl.samuraj.app.rest;
 
 import java.io.IOException;
 import java.nio.file.Files;

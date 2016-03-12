@@ -1,0 +1,114 @@
+mysql> desc egzaminy;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| egz_id | int(11)      | NO   | PRI | NULL    |       |
+| data   | datetime     | NO   |     | NULL    |       |
+| miasto | varchar(255) | YES  |     | NULL    |       |
+| poziom | varchar(255) | YES  |     | KYU     |       |
++--------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc grupy;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| group_id  | int(11)      | NO   | PRI | NULL    |       |
+| nazwa     | varchar(255) | YES  |     | NULL    |       |
+| level     | int(11)      | YES  |     | NULL    |       |
+| miasto    | varchar(255) | YES  |     | NULL    |       |
+| dni_zajec | varchar(255) | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> desc karatecy;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| kar_id         | int(11)      | NO   | PRI | NULL    |       |
+| imie           | varchar(255) | NO   |     | NULL    |       |
+| nazwisko       | varchar(255) | NO   |     | NULL    |       |
+| stopien        | varchar(255) | NO   |     | 10      |       |
+| poziom         | varchar(255) | NO   |     | KYU     |       |
+| telefon        | varchar(255) | YES  |     | NULL    |       |
+| email          | varchar(255) | YES  |     | NULL    |       |
+| data_zapisu    | datetime     | YES  |     | NULL    |       |
+| data_urodzenia | varchar(255) | YES  |     | NULL    |       |
+| adres          | text         | YES  |     | NULL    |       |
+| miejscowosc    | varchar(255) | YES  |     | NULL    |       |
+| grupa          | int(11)      | YES  |     | NULL    |       |
+| status         | varchar(255) | YES  |     | 1       |       |
+| rocznik        | varchar(255) | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+14 rows in set (0.00 sec)
+
+mysql> desc karegz;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| kar_id  | int(11)      | NO   | PRI | NULL    |       |
+| egz_id  | int(11)      | NO   | PRI | NULL    |       |
+| stopien | int(11)      | NO   |     | 10      |       |
+| poziom  | varchar(255) | NO   |     | KYU     |       |
++---------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc karob;
++---------+---------+------+-----+---------+-------+
+| Field   | Type    | Null | Key | Default | Extra |
++---------+---------+------+-----+---------+-------+
+| kar_id  | int(11) | YES  |     | NULL    |       |
+| oboz_id | int(11) | YES  |     | NULL    |       |
++---------+---------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc komunikatory;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| id     | int(11)      | NO   | PRI | NULL    |       |
+| kar_id | int(11)      | YES  |     | NULL    |       |
+| typ    | varchar(255) | YES  |     | NULL    |       |
+| adres  | varchar(255) | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc obecnosc;
++---------+----------+------+-----+---------+-------+
+| Field   | Type     | Null | Key | Default | Extra |
++---------+----------+------+-----+---------+-------+
+| kar_id  | int(11)  | NO   | PRI | NULL    |       |
+| od      | datetime | NO   | PRI | NULL    |       |
+| do      | datetime | NO   | PRI | NULL    |       |
+| godziny | int(11)  | YES  |     | NULL    |       |
++---------+----------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc obozy;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| oboz_id  | int(11)      | NO   | PRI | NULL    |       |
+| nazwa    | varchar(255) | NO   |     | NULL    |       |
+| poczatek | datetime     | NO   |     | NULL    |       |
+| koniec   | datetime     | NO   |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc users;
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| id              | int(11)      | NO   | PRI | 1       |       |
+| login           | varchar(255) | YES  |     | NULL    |       |
+| pass            | varchar(255) | YES  |     | NULL    |       |
+| imie            | varchar(255) | YES  |     | NULL    |       |
+| nazwisko        | varchar(255) | YES  |     | NULL    |       |
+| email           | varchar(255) | YES  |     | NULL    |       |
+| last_log        | datetime     | YES  |     | NULL    |       |
+| miasto          | varchar(255) | YES  |     | NULL    |       |
+| role            | varchar(255) | NO   |     | USER    |       |
+| wydruk          | varchar(255) | YES  |     | norm    |       |
+| rozmiar_wydruku | varchar(255) | YES  |     | norm    |       |
++-----------------+--------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
