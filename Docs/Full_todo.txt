@@ -1,0 +1,16 @@
+TO-DO:
+* zdjecia + system do łatwego tworzenia zdjęć na podstawie zdjęć grupowych
+* klasa per tabela: karateka, egzamin, grupa etc.
+* czytelniejsze listy z danymi zwizualizowanymi (np. stopien w formie koloru pasa z podpisem nalozonego na zdjecie)
+* latwiejsze zarzadzanie przypisanie do grup/egzaminów/obozów
+* dodanie eventow: domyslne typy jak egzamin, oboz, staz, dodatkowy trening oraz opcja custom
+* podsumowanie doswiadczenia karateki: kiedy i jakie zdawal egzaminy, w jakich stazach i obozach bral udział, etc.
+* system notatek, np. przy karatekach - mozliwosc dopisania uwag, to samo do egzaminow etc.
+* drukowanie tylko w formacie PDF
+* lepszy system przypisywania osob do eventów (completer/albo raczej drzewko z uwzglednieniem miast/grup)
+* do edycji/dodawania/drukowania popupy zamiast nowych okien
+* opcje wyszukiwania
+* opcje obecnosci (z uwzglednieniem podstawowych i dodatkowych)
+* obecnosci - wykresy
+* system śledzenia oplat
+* stats - wykres liczby osob w grupie od czasu

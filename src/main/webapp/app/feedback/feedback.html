@@ -1,0 +1,6 @@
+<div class="alert alert-{{feedback.type}} alert-dismissable" ng-repeat="feedback in feedbacks">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+            ng-click="closeAlert($index);">&times;</button>
+    <strong ng-if="feedback.title">{{feedback.title}}<br/></strong>
+    <span ng-bind-html="feedback.message | nl2br"></span>
+</div>
