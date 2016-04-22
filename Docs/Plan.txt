@@ -3,14 +3,12 @@
   - opis opcjonalnej procedury migracji (raczej nastawienie na nowych użytkowników)
   - zaznaczenie, że do bazy dostęp mają tylko użytkownicy wewnętrzni
   - rozbudowanie analizy ryzyka
-2. uzupełnienie brakujących dokumentów:
-  - wizja GUI (szkic)
-  - plan prowadzenia projektu (ten dokument)
-3. Spisanie wymagań funkcjonalnych/niefunkcjonalnych
-4. zaprojektowanie nowej bazy danych
-5. zaprojektowanie i wstępna implementacja modelu danych (Java)
-6. zaprojektowanie formatek w oparciu o szkic
-7. uzupełnienie klasy Karateka i stworzenie potrzebnych formatek dodawania/edycji
-8. implementacja klas Miasto, Grupa i ich formatek
-9. testowanie dostępnych funkcjonalności, poprawianie wykrytych bugów
-10. testowy deployment na świeżym systemie, spisanie kompletnej procedury instalacji dla systemu Ubuntu
+  - uzupełnienie brakujących dokumentów: wizja GUI (szkic), plan prowadzenia projektu (ten dokument)
+2. Spisanie wymagań funkcjonalnych/niefunkcjonalnych + architektura + scenariusze/use case
+3. Zaprojektowanie nowej bazy danych
+4. Zaprojektowanie i wstępna implementacja modelu danych (Java)
+5. Zaprojektowanie formatek w oparciu o szkic
+6. Implementacja klasy Karateka i stworzenie potrzebnych formatek dodawania/edycji
+7. Implementacja klas Miasto, Grupa i ich formatek
+8. testowanie dostępnych funkcjonalności, poprawianie wykrytych bugów
+9. testowy deployment na świeżym systemie, spisanie kompletnej procedury instalacji dla systemu Ubuntu
