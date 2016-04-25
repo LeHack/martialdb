@@ -51,7 +51,9 @@ public class ResultSetMetaDataSerializer extends JsonSerializer<ResultSetMetaDat
             jgen.writeStartArray();
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
                 jgen.writeStartObject();
-                jgen.writeFieldName(rsmd.getColumnLabel(i + 1));
+                jgen.writeFieldName("name");
+                jgen.writeString(rsmd.getColumnLabel(i + 1));
+                jgen.writeFieldName("type");
                 jgen.writeNumber(rsmd.getColumnType(i + 1));
                 jgen.writeEndObject();
             }

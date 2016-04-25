@@ -42,6 +42,8 @@ import pl.martialdb.app.rest.RestData;
 public class MartialDatabase {
     private DataSource _dataSource;
     
+    private static final org.apache.log4j.Logger appLog = org.apache.log4j.Logger.getLogger("appLog");
+    
     public MartialDatabase(){
         try {
             Context initialContext = new InitialContext();
@@ -49,7 +51,7 @@ public class MartialDatabase {
             String dataResourceName = "jdbc/MartialDB";
             _dataSource = (DataSource) environmentContext.lookup(dataResourceName);            
         } catch (NamingException e) {
-            System.err.println(e.getMessage());
+            appLog.error(e.getMessage());
         }
     }
     
@@ -79,18 +81,17 @@ public class MartialDatabase {
                 objectMapper.writeValue(stringWriter, objectNode);
                 
             } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                appLog.error(e.getMessage());
             } catch (IOException e) {
-                System.err.println(e.getMessage());
+                appLog.error(e.getMessage());
             } finally {
                 // Release connection back to the pool
                 if (conn != null) { conn.close(); }
                 conn = null; // prevent any future access
             }
         } catch (SQLException e) {
-                System.err.println(e.getMessage());
+                appLog.error(e.getMessage());
         }
-        System.out.println(stringWriter.toString());
         return stringWriter.toString();
     }
     

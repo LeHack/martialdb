@@ -30,7 +30,7 @@ public class webSession {
 
     private static final int SESSION_TTL = 900;
 
-    private static final Logger appLog = Logger.getLogger("ipcapSysLog");
+    private static final Logger appLog = Logger.getLogger("appLog");
     
     public static void create(@Context HttpServletRequest httpRequest, String fullUserName) {
         HttpSession session = httpRequest.getSession(true);

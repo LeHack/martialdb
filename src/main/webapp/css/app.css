@@ -216,3 +216,56 @@ label {
     -ms-user-select: none;
     user-select: none;
 }
+
+table {
+  max-width: 100%;
+  background-color: transparent;
+}
+th {
+  text-align: left;
+}
+.table {
+  width: 100%;
+  margin: 10px 0 5px 0;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+.table > thead > tr {
+  border: 1px solid #999999;
+  line-height: 36px;
+}
+.table > thead > tr > th {
+  vertical-align: bottom;
+  background-color: #999999;
+  color: #fafafa;
+  border: none;
+  border-right: 1px solid #ffffff;
+}
+.table > thead > tr > th:last-child {
+  border-right-color: #999999;
+}
+.table > thead > tr > th.sortable-column-header {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.table > thead > tr > th.column-header-sorted-desc:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e094";
+  position: absolute;
+  margin-left: 0.5em;
+}
+.table > thead > tr > th.column-header-sorted-asc:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e093";
+  position: absolute;
+  margin-left: 0.5em;
+}
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-width: 1px 0;
+  border-style: solid;
+  background-color: #EEEEEE;
+}

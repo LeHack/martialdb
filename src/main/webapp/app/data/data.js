@@ -19,15 +19,42 @@ var app = angular.module('app').controller("DataController", function ($scope, $
 
     // remove row
     $scope.removeRow = function (index) {
-        $scope.captures.splice(index, 1);
-// update database
+        $scope.record = {"record": $scope.records[index]};
+
+        var req = {
+            'method': 'POST',
+            'url': 'rs/data_rm',
+            'headers': {
+                'Content-Type': 'application/json'
+            },
+            'data': angular.toJson($scope.record, true)
+        };
+
+//        $http(req).success(function (data, status, headers, config) {
+//            if (0 === data.status) {
+                $scope.records.splice(index, 1);
+//            } else {
+//                feedback.danger("Failed to remove record: " + data.message, "Error");
+//            }
+//        }).error(function (data, status, headers, config) {
+            //feedback.danger("Failed to remove record", "Error");;
+        //});
     };
 
-    $scope.confirmRemoval = function (index) {
+    $scope.Add = function () {
+        //$scope.inserted = {
+            //define fields here
+        //};
+        
+        //add inserted on save
+        //$scope.records.push($scope.inserted);
+    };
+
+    $scope.Remove = function (index) {
 
         var modalInstance = $modal.open({
-            templateUrl: 'confirmRemoval.html',
-            controller: 'confirmRemovalCtrl',
+            templateUrl: 'Remove.html',
+            controller: 'RemoveCtrl',
             resolve: {
                 items: function () {
                     return index;
@@ -45,7 +72,7 @@ var app = angular.module('app').controller("DataController", function ($scope, $
     };
 });
 
-var app = angular.module('app').controller('confirmRemovalCtrl', function ($scope, $modalInstance, items, scope) {
+var app = angular.module('app').controller('RemoveCtrl', function ($scope, $modalInstance, items, scope) {
     $scope.ok = function () {
         $modalInstance.close(items);
     };
