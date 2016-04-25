@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial creation.
  * -------------------------------------------------------------------------------
  */
-package pl.samuraj.app.rest.session;
+package pl.martialdb.app.rest.session;
 
 import java.io.Serializable;
 import java.security.Principal;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSCredential;
 
-import pl.samuraj.app.rbac.Roles;
+import pl.martialdb.app.rbac.Roles;
 
 public class webAuth implements Serializable {
 

@@ -14,7 +14,7 @@
  *  08-Mar-2014  Initial
  *  ----------------------------------------------------------------------------
  */
-package pl.samuraj.app.rbac;
+package pl.martialdb.app.rbac;
 
 public enum RoleType {
     USERS,

@@ -15,7 +15,7 @@
  *  -----------------------------------------------------------------------------
  */
 
-package pl.samuraj.app.rbac;
+package pl.martialdb.app.rbac;
 
 import java.util.Collection;
 import java.util.EnumSet;

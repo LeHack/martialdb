@@ -15,15 +15,15 @@
  * 08-Mar-2016  Initial creation.
  * ------------------------------------------------------------------------------
  */
-package pl.samuraj.app.rest.session;
+package pl.martialdb.app.rest.session;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import org.apache.log4j.Logger;
 
-import pl.samuraj.app.rbac.RoleType;
-import pl.samuraj.app.rbac.Roles;
+import pl.martialdb.app.rbac.RoleType;
+import pl.martialdb.app.rbac.Roles;
 
 public class webSession {
     // Session time to live = 900 seconds (15 minutes)
