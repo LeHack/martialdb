@@ -14,6 +14,10 @@ angular.module('app', ['ui.bootstrap', 'ngRoute', 'AuthService', 'xeditable'])
                 }).when('/admins', {
                     templateUrl: 'app/admins/admins.html',
                     controller: ''
+                }).when('/data', {
+                    templateUrl: 'app/data/data.html',
+                    controller: 'DataController'
+
                 }).otherwise({
                     redirectTo: '/'
                 });

@@ -1,0 +1,53 @@
+<div ui-view class="ui-widget">
+    <div>
+        <h3>{{title}}</h3>
+    </div>
+    <div data-ng-init="loadData()">
+        <button class="btn btn-default btn-primary" ng-click="Add()" tooltip="Add">
+            <span class="glyphicon glyphicon-plus"></span> Add
+        </button>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+                <tr style="font-weight: bold">
+                    <th ng-repeat="field in fields">{{ field.name || '' }}</th>
+                    <th>Functions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="record in records" style="vertical-align:top;">
+                    <td ng-repeat="field in fields">
+                        <span>
+                            {{record[field.name]}}
+                        </span>
+                    </td>
+
+                    <td style="white-space:nowrap">
+                    <!-- form -->
+                    <form editable-form name="rowform" class="form-buttons form-inline">
+                        <button class="btn btn-primary" ng-click="Edit($index)" tooltip="Edit" tooltip="Edit">
+                            <span class="glyphicon glyphicon-pencil"></span> Edit
+                        </button>
+                        <button class="btn btn-primary" ng-click="Remove($index)" tooltip="Remove">
+                            <span class="glyphicon glyphicon-trash"></span> Remove
+                        </button>
+                    </form>
+                  </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <br/>
+        <script type="text/ng-template" id="Remove.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                Do you really want to remove?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" ng-click="ok()">Remove</button>
+                <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
+            </div>
+        </script>
+    </div>
+</div>

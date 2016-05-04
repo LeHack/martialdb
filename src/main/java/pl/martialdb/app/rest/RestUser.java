@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial creation.
  * -------------------------------------------------------------------------------
  */
-package pl.samuraj.app.rest;
+package pl.martialdb.app.rest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -28,7 +28,7 @@ import javax.json.JsonObject;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
-import pl.samuraj.app.rest.session.webSession;
+import pl.martialdb.app.rest.session.webSession;
 
 @Path("/user")
 public class RestUser {

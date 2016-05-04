@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context docBase="app"
-         path="/app"
-         antiJARLocking="true"
->
+<Context antiJARLocking="true"
+         docBase="martialdb"
+         path="/martialdb">
+    <Resource name="jdbc/MartialDB"
+              auth="Container"
+              type="javax.sql.DataSource" 
+              driverClassName="org.sqlite.JDBC"
+              url="jdbc:sqlite:/${catalina.home}/dbs/Martial.db"
+              factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory">
+    </Resource>
 </Context>

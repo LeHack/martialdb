@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial creation.
  * -----------------------------------------------------------------------------
  */
-package pl.samuraj.app.rest;
+package pl.martialdb.app.rest;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +27,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
-import pl.samuraj.app.rest.session.webAuth;
-import pl.samuraj.app.rest.session.webSession;
+import pl.martialdb.app.rest.session.webAuth;
+import pl.martialdb.app.rest.session.webSession;
 
 @Path("/login")
 public class RestLogin {

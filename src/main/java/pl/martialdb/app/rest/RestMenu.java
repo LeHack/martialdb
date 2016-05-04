@@ -14,11 +14,11 @@
  * 08 Mar 2016  Initial creation
  * -----------------------------------------------------------------------------
  */
-package pl.samuraj.app.rest;
+package pl.martialdb.app.rest;
 
-import pl.samuraj.app.rbac.RoleType;
-import pl.samuraj.app.rbac.Roles;
-import pl.samuraj.app.rest.session.webSession;
+import pl.martialdb.app.rbac.RoleType;
+import pl.martialdb.app.rbac.Roles;
+import pl.martialdb.app.rest.session.webSession;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -55,9 +55,18 @@ public class RestMenu {
             
             if ( webSession.hasRole(httpRequest, RoleType.USERS) ){
                 subMenuItems.add(Json.createObjectBuilder()
+                        .add("name", "Example data")
+                        .add("url", "data")
+                        .build());
+                subMenuItems.add(Json.createObjectBuilder()
                         .add("name", "Users")
                         .add("url", "users")
                         .build());
+                subMenuItems.add(Json.createObjectBuilder()
+                        .add("name", "Inny")
+                        .add("url", "inny")
+                        .build());
+
                 menuItems.add(Json.createObjectBuilder()
                           .add("name", "Users")
                           .add("cssClass", "active")

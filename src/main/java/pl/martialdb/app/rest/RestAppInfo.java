@@ -14,7 +14,7 @@
  * 08-Mar-2016  Initial
  * -----------------------------------------------------------------------------
  */
-package pl.samuraj.app.rest;
+package pl.martialdb.app.rest;
 
 import java.io.IOException;
 import java.nio.file.Files;
