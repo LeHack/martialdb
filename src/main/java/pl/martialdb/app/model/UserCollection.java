@@ -19,7 +19,7 @@ public class UserCollection extends User {
     private Collection<User> getAll() {
         Collection<User> users = new ArrayList<>();
         ResultSet rows = this.db.runQuery(
-            "SELECT id, login, pass, name, surname, email, role, defaultCity, stamp from user"
+            "SELECT " + sqlFieldsStr + " from user"
         );
         try {
             while (rows.next()) {
@@ -28,7 +28,7 @@ public class UserCollection extends User {
                 users.add(user);
             }
         } catch (SQLException e) {
-            logger.error("Error when creating user list", e);
+            logger.error("Error when creating user collection", e);
         }
         return users;
     }

@@ -17,12 +17,12 @@ public class UserTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        cleanup();
+        Utils.dropTestDB();
         db = Utils.initTestDB();
     }
 
     @AfterClass
-    public static void cleanup() {
+    public static void tearDownAfterClass() throws Exception {
         Utils.dropTestDB();
     }
 

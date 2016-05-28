@@ -4,14 +4,11 @@
  *******************************************************************************
  *
  *  NAME
- *      User.java
+ *      Karateka.java
  *
  *  DESCRIPTION
- *      Class describing MartialDB users
+ *      Class describing MartialDB Karatekas
  *
- *  NOTES
- *      Too generate a password hash, use: BCrypt.hashpw(password, BCrypt.gensalt());
- *  
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
  *  28-May-2014  Initial
@@ -28,33 +25,34 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import jersey.repackaged.com.google.common.base.Joiner;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class User {
+public class Karateka {
     final MartialDatabase db;
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
-    private Integer id;
-    private String login, pass, name, surname, email, role, defaultCity;
-    private Date stamp;
-
+    private Integer id, groupId;
+    private String name, surname, email, telephone, address, city;
+    private Rank rank;
+    private Date signupDate, birthdate;
+    private boolean status;
+    
     protected List<String> sqlFields = Arrays.asList(
-        "id", "login", "pass", "name", "surname", "email", "role", "defaultCity", "stamp"
+        "id", "group_id", "name", "surname", "email", "telephone", "address", "city",
+        "rank_type", "rank_level", "signup", "birthdate", "status"
     );
     protected String sqlFieldsStr = Joiner.on(",").join(sqlFields);
 
-    public User(MartialDatabase...db){
+    public Karateka(MartialDatabase...db){
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public User(int id, MartialDatabase...db) {
+    public Karateka(int id, MartialDatabase...db) {
         this(db);
-        logger.debug("Creating User instance for user id: " + id);
+        logger.debug("Creating Karateka instance for id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from user where id = ?", id
+            "SELECT " + sqlFieldsStr + " from karateka where id = ?", id
         );
         try {
             row.next();
@@ -64,18 +62,22 @@ public class User {
         init( row );
     }
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     public void init(ResultSet data) {
         try {
             this.id          = data.getInt("id");
-            this.login       = data.getString("login");
-            this.pass        = data.getString("pass");
+            this.groupId     = data.getInt("group_id"); // TODO: replace with object?
             this.name        = data.getString("name");
             this.surname     = data.getString("surname");
+            this.telephone   = data.getString("telephone");
             this.email       = data.getString("email");
-            this.role        = data.getString("role"); // TODO, change to ENUM
-            this.defaultCity = data.getString("defaultCity"); // TODO: Change to foreign key
-            this.stamp       = dateFormat.parse( data.getString("stamp") );
+            this.address     = data.getString("address");
+            this.city        = data.getString("city");
+            this.signupDate  = dateFormat.parse( data.getString("signup") );
+            this.birthdate   = dateFormat.parse( data.getString("birthdate") );
+            // data.getBoolean() doesn't work correctly with SQLite
+            this.status      = "true".equals( data.getString("status") );
+            this.rank        = new Rank( data.getString("rank_type"), data.getInt("rank_level") );
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing user", e);
         }
@@ -85,7 +87,15 @@ public class User {
         return this.id;
     }
 
+    public int getGroupId() {
+        return this.groupId;
+    }
+
     public String getName() {
+        return this.name;
+    }
+
+    public String getFullName() {
         return this.name + " " + this.surname;
     }
 
@@ -93,28 +103,31 @@ public class User {
         return this.email;
     }
 
-    public String getDefaultCity() {
-        return this.defaultCity;
+    public String getTelephone() {
+        return this.telephone;
     }
 
-    public String getRole() {
-        return this.role;
+    public String getAddress() {
+        return this.address;
     }
 
-    public String getLogin() {
-        return this.login;
+    public String getCity() {
+        return this.city;
     }
 
-    public Boolean comparePassword(StringBuffer password) {
-        return BCrypt.checkpw(password.toString(), this.pass);
+    public Rank getRank() {
+        return this.rank;
     }
 
-    public Date getLastLogin() {
-        return this.stamp;
+    public boolean getStatus() {
+        return this.status;
     }
 
-    public void updateLoginStamp() {
-        String now = dateFormat.format(new Date());
-        this.db.runQuery("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, this.id));
+    public Date getSignupDate() {
+        return this.signupDate;
+    }
+
+    public Date getBirthdate() {
+        return this.birthdate;
     }
 }
