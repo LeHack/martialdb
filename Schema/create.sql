@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS "user" (
+    "id" INTEGER PRIMARY KEY  NOT NULL,
+    "login" VARCHAR NOT NULL,
+    "pass" VARCHAR NOT NULL,
+    "name" VARCHAR NOT NULL,
+    "surname" VARCHAR NOT NULL,
+    "email" VARCHAR NOT NULL,
+    "role" VARCHAR NOT NULL,
+    "defaultCity" VARCHAR NOT NULL,
+    "stamp" DATETIME DEFAULT (CURRENT_TIMESTAMP)
+);
