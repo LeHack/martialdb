@@ -80,6 +80,7 @@ public class webAuth implements Serializable {
             if (roles.isEmpty()) {
                 appLog.warn("Authorization of " + fullUsername + " finished with failure.");
             } else {
+                u.updateLoginStamp();
                 appLog.info("Authentication of " + userDomain + " finished with success.");
                 isValid = true;
             }

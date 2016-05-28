@@ -2,6 +2,8 @@ package pl.martialdb.test.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -103,4 +105,13 @@ public class UserTest {
         assertTrue(u2.comparePassword(new StringBuffer("admin")));
     }
 
+    @Test
+    public final void testUpdateLoginStamp() {
+        User u = new User(1, db);
+        u.updateLoginStamp();
+        Date stamp = u.getLastLogin();
+
+        User uNew = new User(1, db);
+        assertEquals(uNew.getLastLogin().toString(), stamp.toString());
+    }
 }

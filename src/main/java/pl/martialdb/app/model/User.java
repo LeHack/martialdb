@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -103,5 +104,10 @@ public class User {
 
     public Date getLastLogin() {
         return this.stamp;
+    }
+
+    public void updateLoginStamp() {
+        String now = dateFormat.format(new Date());
+        this.db.runQuery("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, this.id));
     }
 }
