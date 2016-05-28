@@ -91,4 +91,16 @@ public class UserTest {
         User u2 = new User(2, db);
         assertEquals(u2.getLastLogin().toString(), "Sat May 28 11:44:28 CEST 2016");
     }
+
+    @Test
+    public final void testComparePassword() {
+        User u1 = new User(1, db);
+        assertFalse(u1.comparePassword(new StringBuffer("whatever")));
+        assertTrue(u1.comparePassword(new StringBuffer("admin")));
+
+        User u2 = new User(2, db);
+        assertFalse(u2.comparePassword(new StringBuffer("whatever")));
+        assertTrue(u2.comparePassword(new StringBuffer("admin")));
+    }
+
 }

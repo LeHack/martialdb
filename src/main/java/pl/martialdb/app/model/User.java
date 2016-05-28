@@ -8,6 +8,9 @@
  *
  *  DESCRIPTION
  *      Class describing MartialDB users
+ *
+ *  NOTES
+ *      Too generate a password hash, use: BCrypt.hashpw(password, BCrypt.gensalt());
  *  
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
@@ -22,6 +25,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import pl.martialdb.app.db.MartialDatabase;
 
@@ -93,8 +98,7 @@ public class User {
     }
 
     public Boolean comparePassword(StringBuffer password) {
-        // TODO: the password should be hashed and compared against pass
-        return true;
+        return BCrypt.checkpw(password.toString(), this.pass);
     }
 
     public Date getLastLogin() {
