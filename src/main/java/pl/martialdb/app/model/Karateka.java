@@ -21,14 +21,11 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
-import jersey.repackaged.com.google.common.base.Joiner;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class Karateka {
+public class Karateka extends KaratekaMetaData {
     final MartialDatabase db;
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
@@ -37,12 +34,6 @@ public class Karateka {
     private Rank rank;
     private Date signupDate, birthdate;
     private boolean status;
-    
-    protected List<String> sqlFields = Arrays.asList(
-        "id", "group_id", "name", "surname", "email", "telephone", "address", "city",
-        "rank_type", "rank_level", "signup", "birthdate", "status"
-    );
-    protected String sqlFieldsStr = Joiner.on(",").join(sqlFields);
 
     public Karateka(MartialDatabase...db){
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());

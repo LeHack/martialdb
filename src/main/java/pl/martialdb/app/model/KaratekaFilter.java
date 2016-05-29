@@ -1,7 +1,5 @@
 package pl.martialdb.app.model;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,8 +21,12 @@ public class KaratekaFilter {
     }
 
     public boolean check(String field, Object value) {
-        assertTrue(this.predicates.containsKey(field));
-        Object filterVal = this.predicates.get(field);
-        return (filterVal == null || filterVal.equals(value));
+        boolean result = true;
+
+        if (this.predicates.containsKey(field)) {
+            Object filterVal = this.predicates.get(field);
+            result = (filterVal == null || filterVal.equals(value));
+        }
+        return result;
     }
 }
