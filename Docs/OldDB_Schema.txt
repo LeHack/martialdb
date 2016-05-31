@@ -15,7 +15,6 @@ mysql> desc grupy;
 +-----------+--------------+------+-----+---------+-------+
 | group_id  | int(11)      | NO   | PRI | NULL    |       |
 | nazwa     | varchar(255) | YES  |     | NULL    |       |
-| level     | int(11)      | YES  |     | NULL    |       |
 | miasto    | varchar(255) | YES  |     | NULL    |       |
 | dni_zajec | varchar(255) | YES  |     | NULL    |       |
 +-----------+--------------+------+-----+---------+-------+

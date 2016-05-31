@@ -2,34 +2,14 @@ package pl.martialdb.test.model;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.model.Karateka;
 import pl.martialdb.app.model.Rank;
 import pl.martialdb.app.model.Rank.RankType;
-import pl.martialdb.app.test.Utils;
+import pl.martialdb.app.test.Common;
 
-public class KaratekaTest {
-    static MartialDatabase db;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        Utils.dropTestDB();
-        db = Utils.initTestDB();
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        Utils.dropTestDB();
-    }
-
+public class KaratekaTest extends Common {
     @Test
     public final void testKaratekaIntMartialDatabaseArray() {
         Karateka k1 = new Karateka(1, db);
@@ -54,10 +34,10 @@ public class KaratekaTest {
     @Test
     public final void testGetGroupId() {
         Karateka k1 = new Karateka(1, db);
-        assertEquals(k1.getGroupId(), 1);
+        assertEquals(k1.getGroupId(), 3);
 
         Karateka k2 = new Karateka(2, db);
-        assertEquals(k2.getGroupId(), 1);
+        assertEquals(k2.getGroupId(), 2);
     }
 
     @Test

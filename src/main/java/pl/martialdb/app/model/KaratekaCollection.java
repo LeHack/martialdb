@@ -44,6 +44,9 @@ public class KaratekaCollection extends Karateka {
             if (!f.check( "status", k.getStatus() )) {
                 continue;
             }
+            if (!f.check( "groupId", k.getGroupId() )) {
+                continue;
+            }
             result.add( k );
         }
 

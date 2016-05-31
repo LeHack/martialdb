@@ -4,28 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.model.User;
-import pl.martialdb.app.test.Utils;
+import pl.martialdb.app.test.Common;
 
-public class UserTest {
-    static MartialDatabase db;
-
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        Utils.dropTestDB();
-        db = Utils.initTestDB();
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-        Utils.dropTestDB();
-    }
-
+public class UserTest extends Common {
     @Test
     public final void testUserIntMartialDatabaseArray() {
         User u1 = new User(1, db);

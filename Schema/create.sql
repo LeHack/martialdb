@@ -25,3 +25,9 @@ CREATE TABLE "karateka" (
     "birthdate" DATETIME,
     "status" BOOL NOT NULL DEFAULT true
 );
+
+CREATE TABLE "training_group" (
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE ,
+    "city_id" INTEGER NOT NULL ,
+    "name" VARCHAR NOT NULL
+);

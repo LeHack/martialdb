@@ -70,7 +70,7 @@ public class Karateka extends KaratekaMetaData {
             this.status      = "true".equals( data.getString("status") );
             this.rank        = new Rank( data.getString("rank_type"), data.getInt("rank_level") );
         } catch (SQLException | ParseException e) {
-            logger.error("Error when initializing user", e);
+            logger.error("Error when initializing karateka", e);
         }
     }
 
