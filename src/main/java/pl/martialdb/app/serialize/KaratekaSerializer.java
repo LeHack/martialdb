@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import pl.martialdb.app.common.BaseMetaData;
+import pl.martialdb.app.common.SerializeMetaData;
 import pl.martialdb.app.model.Karateka;
 import pl.martialdb.app.model.KaratekaMetaData;
 import pl.martialdb.app.model.Rank;
@@ -30,7 +32,7 @@ public class KaratekaSerializer {
         module.addSerializer(new SerializeObject((Class<Collection<Karateka>>) data.getClass()));
 
         SimpleModule module2 = new SimpleModule();
-        module2.addSerializer(new SerializeMetadata(KaratekaMetaData.class));
+        module2.addSerializer(new SerializeMetaData(BaseMetaData.class));
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(module);
@@ -79,28 +81,6 @@ public class KaratekaSerializer {
                 jgen.writeStringField("signup",     dateFormat.format( k.getSignupDate() ));
                 jgen.writeStringField("birthdate",  dateFormat.format( k.getBirthdate() ));
                 jgen.writeBooleanField("status",    k.getStatus());
-                jgen.writeEndObject();
-            }
-            jgen.writeEndArray();
-        }
-    }
-
-    class SerializeMetadata extends StdSerializer<KaratekaMetaData> {
-        private static final long serialVersionUID = -8972250736573074834L;
-
-        protected SerializeMetadata(Class<KaratekaMetaData> t) {
-            super(t);
-        }
-
-        @Override
-        public void serialize(KaratekaMetaData meta, JsonGenerator jgen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-            jgen.writeStartArray();
-            for (String field : meta.getFields()) {
-                jgen.writeStartObject();
-                jgen.writeFieldName("name");
-                jgen.writeString( meta.getLabel(field) );
-                jgen.writeFieldName("type");
-                jgen.writeNumber( meta.getType(field) );
                 jgen.writeEndObject();
             }
             jgen.writeEndArray();
