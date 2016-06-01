@@ -11,7 +11,7 @@
  *
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
- *  31-May-2014  Initial
+ *  31-May-2016  Initial
  *  ----------------------------------------------------------------------------
  */
 package pl.martialdb.app.model;
@@ -32,16 +32,18 @@ public class Group extends GroupMetaData {
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public Group(int id, MartialDatabase...db) {
+    public Group(int id, MartialDatabase...db) throws GroupNotFoundException {
         this(db);
         logger.debug("Creating Group instance for id: " + id);
         ResultSet row = this.db.runQuery(
             "SELECT " + sqlFieldsStr + " from training_group where id = ?", id
         );
         try {
+            if (row.isClosed())
+                throw new GroupNotFoundException("No Group found for id: " + id);
             row.next();
         } catch (SQLException e) {
-            logger.error("Error when constructing user object", e);
+            logger.error("Error when constructing group object", e);
         }
         init( row );
     }
@@ -66,5 +68,13 @@ public class Group extends GroupMetaData {
 
     public String getName() {
         return this.name;
+    }
+
+    public class GroupNotFoundException extends Exception {
+        private static final long serialVersionUID = 5078582624142838847L;
+
+        public GroupNotFoundException(String message) {
+            super(message);
+        }
     }
 }

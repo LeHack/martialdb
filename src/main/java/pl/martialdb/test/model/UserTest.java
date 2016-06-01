@@ -7,11 +7,12 @@ import java.util.Date;
 import org.junit.Test;
 
 import pl.martialdb.app.model.User;
+import pl.martialdb.app.model.User.NoSuchUserException;
 import pl.martialdb.app.test.Common;
 
 public class UserTest extends Common {
     @Test
-    public final void testUserIntMartialDatabaseArray() {
+    public final void testUserIntMartialDatabaseArray() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getLogin(), "john");
 
@@ -20,10 +21,21 @@ public class UserTest extends Common {
 
         User u3 = new User(3, db);
         assertEquals(u3.getLogin(), "gary");
+
+        Throwable userNotFound = null;
+        try {
+            new User(20, db);
+        }
+        catch (NoSuchUserException e) {
+            userNotFound = e;
+        }
+        assertNotNull(userNotFound);
+        assertEquals(userNotFound.getClass(), NoSuchUserException.class);
+        assertEquals(userNotFound.getMessage(), "No User found for id: 20");
     }
 
     @Test
-    public final void testGetId() {
+    public final void testGetId() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getId(), 1);
         User u3 = new User(3, db);
@@ -31,7 +43,7 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testGetName() {
+    public final void testGetName() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getName(), "John Wayne");
         User u3 = new User(3, db);
@@ -39,7 +51,7 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testGetEmail() {
+    public final void testGetEmail() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getEmail(), "john@wayne.com");
         User u2 = new User(2, db);
@@ -47,7 +59,7 @@ public class UserTest extends Common {
 }
 
     @Test
-    public final void testGetDefaultCity() {
+    public final void testGetDefaultCity() throws NoSuchUserException {
         User u2 = new User(2, db);
         assertEquals(u2.getDefaultCity(), "Los Angeles");
         User u3 = new User(3, db);
@@ -55,7 +67,7 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testGetRole() {
+    public final void testGetRole() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getRole(), "ADMIN");
         User u3 = new User(3, db);
@@ -63,7 +75,7 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testGetLogin() {
+    public final void testGetLogin() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getLogin(), "john");
         User u2 = new User(2, db);
@@ -71,7 +83,7 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testGetLastLogin() {
+    public final void testGetLastLogin() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertEquals(u1.getLastLogin().toString(), "Sat May 28 11:42:21 CEST 2016");
         User u2 = new User(2, db);
@@ -79,7 +91,7 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testComparePassword() {
+    public final void testComparePassword() throws NoSuchUserException {
         User u1 = new User(1, db);
         assertFalse(u1.comparePassword(new StringBuffer("whatever")));
         assertTrue(u1.comparePassword(new StringBuffer("admin")));
@@ -90,12 +102,19 @@ public class UserTest extends Common {
     }
 
     @Test
-    public final void testUpdateLoginStamp() {
+    public final void testUpdateLoginStamp() throws NoSuchUserException {
         User u = new User(1, db);
-        u.updateLoginStamp();
-        Date stamp = u.getLastLogin();
+        long stamp = System.currentTimeMillis();
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignore) {}
+
+        u.updateLoginStamp();
+        Date prevStamp = u.getLastLogin();
         User uNew = new User(1, db);
-        assertEquals(uNew.getLastLogin().toString(), stamp.toString());
+        Date newStamp = uNew.getLastLogin();
+        assertNotEquals(newStamp.toString(), prevStamp.toString());
+        assertTrue(newStamp.after(new Date(stamp)) && newStamp.before(new Date(stamp + 5000)));
     }
 }

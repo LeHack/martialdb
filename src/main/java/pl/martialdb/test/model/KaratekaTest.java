@@ -5,13 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import pl.martialdb.app.model.Karateka;
+import pl.martialdb.app.model.Karateka.NoSuchKaratekaException;
 import pl.martialdb.app.model.Rank;
 import pl.martialdb.app.model.Rank.RankType;
 import pl.martialdb.app.test.Common;
 
 public class KaratekaTest extends Common {
     @Test
-    public final void testKaratekaIntMartialDatabaseArray() {
+    public final void testKaratekaIntMartialDatabaseArray() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getName(), "Jan");
 
@@ -20,10 +21,21 @@ public class KaratekaTest extends Common {
 
         Karateka k3 = new Karateka(3, db);
         assertEquals(k3.getName(), "Walery");
+
+        Throwable karatekaNotFound = null;
+        try {
+            new Karateka(20, db);
+        }
+        catch (NoSuchKaratekaException e) {
+            karatekaNotFound = e;
+        }
+        assertNotNull(karatekaNotFound);
+        assertEquals(karatekaNotFound.getClass(), NoSuchKaratekaException.class);
+        assertEquals(karatekaNotFound.getMessage(), "No Karateka found for id: 20");
     }
 
     @Test
-    public final void testGetId() {
+    public final void testGetId() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getId(), 1);
 
@@ -32,7 +44,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetGroupId() {
+    public final void testGetGroupId() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getGroupId(), 3);
 
@@ -41,7 +53,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetName() {
+    public final void testGetName() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getName(), "Jan");
 
@@ -50,7 +62,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetFullName() {
+    public final void testGetFullName() throws NoSuchKaratekaException {
         Karateka k2 = new Karateka(2, db);
         assertEquals(k2.getFullName(), "Marian Nowak");
 
@@ -59,7 +71,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetEmail() {
+    public final void testGetEmail() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getEmail(), "jan@kowalski.com");
 
@@ -68,7 +80,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetTelephone() {
+    public final void testGetTelephone() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getTelephone(), "123456789");
 
@@ -77,7 +89,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetAddress() {
+    public final void testGetAddress() throws NoSuchKaratekaException {
         Karateka k2 = new Karateka(2, db);
         assertEquals(k2.getAddress(), "ul. Testowa");
 
@@ -86,7 +98,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetCity() {
+    public final void testGetCity() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(k1.getCity(), "Gdzieśtamtowo");
 
@@ -95,7 +107,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetRank() {
+    public final void testGetRank() throws NoSuchKaratekaException {
         Rank r1 = new Karateka(1, db).getRank();
         assertEquals(r1.type,  RankType.DAN);
         assertEquals(r1.level, 1);
@@ -110,7 +122,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetStatus() {
+    public final void testGetStatus() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertTrue(k1.getStatus());
 
@@ -119,7 +131,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetSignupDate() {
+    public final void testGetSignupDate() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(dateFormat.format( k1.getSignupDate() ), "2016-05-28");
 
@@ -128,7 +140,7 @@ public class KaratekaTest extends Common {
     }
 
     @Test
-    public final void testGetBirthdate() {
+    public final void testGetBirthdate() throws NoSuchKaratekaException {
         Karateka k1 = new Karateka(1, db);
         assertEquals(dateFormat.format( k1.getBirthdate() ), "2000-01-01");
 

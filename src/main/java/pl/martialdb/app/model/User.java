@@ -14,7 +14,8 @@
  *  
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
- *  28-May-2014  Initial
+ *  28-May-2016 Initial
+ *  01-Jun-2016 Fixed bug in updateLoginStamp()
  *  ----------------------------------------------------------------------------
  */
 package pl.martialdb.app.model;
@@ -32,6 +33,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import jersey.repackaged.com.google.common.base.Joiner;
 import pl.martialdb.app.db.MartialDatabase;
+import pl.martialdb.app.model.Karateka.NoSuchKaratekaException;
 
 public class User {
     final MartialDatabase db;
@@ -50,13 +52,15 @@ public class User {
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public User(int id, MartialDatabase...db) {
+    public User(int id, MartialDatabase...db) throws NoSuchUserException {
         this(db);
         logger.debug("Creating User instance for user id: " + id);
         ResultSet row = this.db.runQuery(
             "SELECT " + sqlFieldsStr + " from user where id = ?", id
         );
         try {
+            if (row.isClosed())
+                throw new NoSuchUserException("No User found for id: " + id);
             row.next();
         } catch (SQLException e) {
             logger.error("Error when constructing user object", e);
@@ -115,6 +119,14 @@ public class User {
 
     public void updateLoginStamp() {
         String now = dateFormat.format(new Date());
-        this.db.runQuery("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, this.id));
+        this.db.runUpdate("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, this.id));
+    }
+
+    public class NoSuchUserException extends Exception {
+        private static final long serialVersionUID = 5078582624142838847L;
+
+        public NoSuchUserException(String message) {
+            super(message);
+        }
     }
 }

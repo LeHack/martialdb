@@ -11,7 +11,7 @@
  *
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
- *  28-May-2014  Initial
+ *  28-May-2016  Initial
  *  ----------------------------------------------------------------------------
  */
 package pl.martialdb.app.model;
@@ -39,16 +39,18 @@ public class Karateka extends KaratekaMetaData {
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public Karateka(int id, MartialDatabase...db) {
+    public Karateka(int id, MartialDatabase...db) throws NoSuchKaratekaException {
         this(db);
         logger.debug("Creating Karateka instance for id: " + id);
         ResultSet row = this.db.runQuery(
             "SELECT " + sqlFieldsStr + " from karateka where id = ?", id
         );
         try {
+            if (row.isClosed())
+                throw new NoSuchKaratekaException("No Karateka found for id: " + id);
             row.next();
         } catch (SQLException e) {
-            logger.error("Error when constructing user object", e);
+            logger.error("SQL Error when constructing karateka object", e);
         }
         init( row );
     }
@@ -120,5 +122,13 @@ public class Karateka extends KaratekaMetaData {
 
     public Date getBirthdate() {
         return this.birthdate;
+    }
+
+    public class NoSuchKaratekaException extends Exception {
+        private static final long serialVersionUID = 5078582624142838847L;
+
+        public NoSuchKaratekaException(String message) {
+            super(message);
+        }
     }
 }

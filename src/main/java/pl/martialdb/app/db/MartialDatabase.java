@@ -15,7 +15,10 @@
  *
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
- *  25-Apr-2014  Initial
+ *  25-Apr-2016 Initial
+ *  29-Jun-2016 Rewrote most of the module. Connections are left open and reused.
+ *              Added simpler methods to execute queries.
+ *  01-Jun-2016 Updated query execution methods to allow for inserts/updates.
  *  ----------------------------------------------------------------------------
  */
 package pl.martialdb.app.db;
@@ -32,11 +35,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import pl.martialdb.app.rest.RestData;
 
 public class MartialDatabase {
     private final Connection dbConnection;
@@ -107,16 +110,37 @@ public class MartialDatabase {
         return runQuery(query, Arrays.asList(single));
     }
     public ResultSet runQuery(String query, List<Object> params){
-        ResultSet rs = null;
+        CheckedFunction<PreparedStatement, Object> executor = stm -> stm.executeQuery();
+        return (ResultSet)_runQuery(query, params, executor);
+    }
+
+    public int runUpdate(String query){
+        return runUpdate(query, Arrays.asList());
+    }
+    public int runUpdate(String query, Object single){
+        return runUpdate(query, Arrays.asList(single));
+    }
+    public int runUpdate(String query, List<Object> params){
+        CheckedFunction<PreparedStatement, Object> executor = stm -> stm.executeUpdate();
+        return (Integer)_runQuery(query, params, executor);
+    }
+
+    @FunctionalInterface
+    public interface CheckedFunction<T, R> {
+       R apply(T t) throws SQLException;
+    }
+
+    private Object _runQuery(String query, List<Object> params, CheckedFunction<PreparedStatement, Object> exec){
+        Object rs = null;
         try {
             PreparedStatement stm = dbConnection.prepareStatement(query);
             int i = 1;
             for (Object p : params) {
                 stm.setObject(i++, p);
             }
-            rs = stm.executeQuery();
+            rs = exec.apply(stm);
         } catch (SQLException e) {
-            appLog.error("Error executing query", e);
+            appLog.error("Error executing query: " + query, e);
         }
         return rs;
     }
