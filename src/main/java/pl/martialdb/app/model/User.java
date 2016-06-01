@@ -33,7 +33,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import jersey.repackaged.com.google.common.base.Joiner;
 import pl.martialdb.app.db.MartialDatabase;
-import pl.martialdb.app.model.Karateka.NoSuchKaratekaException;
 
 public class User {
     final MartialDatabase db;
