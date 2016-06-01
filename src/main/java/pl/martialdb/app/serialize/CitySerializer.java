@@ -15,18 +15,18 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import pl.martialdb.app.common.BaseMetaData;
 import pl.martialdb.app.common.SerializeMetaData;
-import pl.martialdb.app.model.Group;
-import pl.martialdb.app.model.GroupMetaData;
+import pl.martialdb.app.model.City;
+import pl.martialdb.app.model.CityMetaData;
 
-public class GroupSerializer {
+public class CitySerializer {
     private static final org.apache.log4j.Logger appLog = org.apache.log4j.Logger.getLogger("appLog");
 
     @SuppressWarnings("unchecked")
-    public String asJSON(Collection<Group> data){
+    public String asJSON(Collection<City> data){
         StringWriter stringWriter = new StringWriter();
 
         SimpleModule module = new SimpleModule();
-        module.addSerializer(new SerializeObject((Class<Collection<Group>>) data.getClass()));
+        module.addSerializer(new SerializeObject((Class<Collection<City>>) data.getClass()));
 
         SimpleModule module2 = new SimpleModule();
         module2.addSerializer(new SerializeMetaData(BaseMetaData.class));
@@ -37,32 +37,31 @@ public class GroupSerializer {
 
         try {
             ObjectNode objectNode = objectMapper.createObjectNode();
-            objectNode.putPOJO("fields", new GroupMetaData());
+            objectNode.putPOJO("fields", new CityMetaData());
             objectNode.putPOJO("records", data);
             objectMapper.writeValue(stringWriter, objectNode);
         } catch (IOException e) {
-            appLog.error("Error while serializing Group Collection", e);
+            appLog.error("Error while serializing City Collection", e);
         }
         return stringWriter.toString();
     }
 
-    public class SerializeObject extends StdSerializer<Collection<Group>> {
+    public class SerializeObject extends StdSerializer<Collection<City>> {
         private static final long serialVersionUID = -8818412071392943688L;
 
-        protected SerializeObject(Class<Collection<Group>> t) {
+        protected SerializeObject(Class<Collection<City>> t) {
             super(t);
         }
 
         @Override
-        public void serialize(Collection<Group> data, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-            Iterator<Group> iter = data.iterator();
+        public void serialize(Collection<City> data, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+            Iterator<City> iter = data.iterator();
             jgen.writeStartArray();
             while (iter.hasNext()) {
-                Group g = iter.next();
+                City c = iter.next();
                 jgen.writeStartObject();
-                jgen.writeNumberField("id",         g.getId());
-                jgen.writeNumberField("cityId",     g.getCityId());
-                jgen.writeStringField("name",       g.getName());
+                jgen.writeNumberField("id",     c.getId());
+                jgen.writeStringField("name",   c.getName());
                 jgen.writeEndObject();
             }
             jgen.writeEndArray();

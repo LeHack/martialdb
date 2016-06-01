@@ -18,16 +18,11 @@ package pl.martialdb.app.rest.session;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 import javax.naming.NamingException;
-import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
-import org.ietf.jgss.GSSCredential;
 
 import pl.martialdb.app.model.User;
 import pl.martialdb.app.model.UserCollection;

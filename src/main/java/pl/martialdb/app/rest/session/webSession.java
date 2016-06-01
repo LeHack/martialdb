@@ -79,7 +79,8 @@ public class webSession {
         HttpSession session = httpRequest.getSession(false);
         if (null != session) {
             Roles roles = (Roles) session.getAttribute("roles");
-            return !roles.isEmpty();
+            if (roles != null)
+                return !roles.isEmpty();
         }
         return false;
     }

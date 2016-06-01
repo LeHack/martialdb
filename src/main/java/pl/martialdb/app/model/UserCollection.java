@@ -19,7 +19,7 @@ public class UserCollection extends User {
     private Collection<User> getAll() {
         Collection<User> users = new ArrayList<>();
         ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from user"
+            "SELECT " + sqlFieldsStr + " from user order by id"
         );
         try {
             while (rows.next()) {

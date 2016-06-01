@@ -61,9 +61,9 @@ public class UserTest extends Common {
     @Test
     public final void testGetDefaultCity() throws NoSuchUserException {
         User u2 = new User(2, db);
-        assertEquals(u2.getDefaultCity(), "Los Angeles");
+        assertEquals(u2.getDefaultCity(), 1);
         User u3 = new User(3, db);
-        assertEquals(u3.getDefaultCity(), "Hadleyville");
+        assertEquals(u3.getDefaultCity(), 2);
     }
 
     @Test

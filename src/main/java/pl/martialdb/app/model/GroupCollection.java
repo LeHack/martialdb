@@ -20,7 +20,7 @@ public class GroupCollection extends Group {
     private Collection<Group> getAll() {
         Collection<Group> groups = new ArrayList<>();
         ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from training_group"
+            "SELECT " + sqlFieldsStr + " from training_group order by id"
         );
         try {
             while (rows.next()) {

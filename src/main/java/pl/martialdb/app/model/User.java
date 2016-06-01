@@ -38,8 +38,8 @@ public class User {
     final MartialDatabase db;
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
-    private Integer id;
-    private String login, pass, name, surname, email, role, defaultCity;
+    private Integer id, defaultCity;
+    private String login, pass, name, surname, email, role;
     private Date stamp;
 
     protected List<String> sqlFields = Arrays.asList(
@@ -77,7 +77,7 @@ public class User {
             this.surname     = data.getString("surname");
             this.email       = data.getString("email");
             this.role        = data.getString("role"); // TODO, change to ENUM
-            this.defaultCity = data.getString("defaultCity"); // TODO: Change to foreign key
+            this.defaultCity = data.getInt("defaultCity");
             this.stamp       = dateFormat.parse( data.getString("stamp") );
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing user", e);
@@ -96,7 +96,7 @@ public class User {
         return this.email;
     }
 
-    public String getDefaultCity() {
+    public int getDefaultCity() {
         return this.defaultCity;
     }
 

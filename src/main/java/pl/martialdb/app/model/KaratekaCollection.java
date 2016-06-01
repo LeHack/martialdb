@@ -20,7 +20,7 @@ public class KaratekaCollection extends Karateka {
     private Collection<Karateka> getAll() {
         Collection<Karateka> karatekas = new ArrayList<>();
         ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from karateka"
+            "SELECT " + sqlFieldsStr + " from karateka order by id"
         );
         try {
             while (rows.next()) {

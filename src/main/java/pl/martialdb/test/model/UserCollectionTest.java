@@ -21,5 +21,4 @@ public class UserCollectionTest extends Common {
         assertEquals( u.getName(), "John Wayne" );
         assertEquals( u.getRole(), "ADMIN" );
     }
-
 }
