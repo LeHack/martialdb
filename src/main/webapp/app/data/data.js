@@ -70,9 +70,43 @@ var app = angular.module('app').controller("DataController", function ($scope, $
         }, function () {
         });
     };
+    
+    $scope.Edit = function (index) {
+
+        $scope.record = angular.copy($scope.records[index]);
+
+        var modalInstance = $modal.open({
+            templateUrl: 'Edit.html',
+            controller: 'EditCtrl',
+            scope: $scope,
+            resolve: {
+                items: function () {
+                    return index;
+                },
+                scope: function () {
+                    return $scope;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (index) {
+            $scope.records[index] = angular.copy($scope.record);
+        }, function () {
+        });
+    };
 });
 
 var app = angular.module('app').controller('RemoveCtrl', function ($scope, $modalInstance, items, scope) {
+    $scope.ok = function () {
+        $modalInstance.close(items);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss();
+    };
+});
+
+var app = angular.module('app').controller('EditCtrl', function ($scope, $modalInstance, items, scope) {
     $scope.ok = function () {
         $modalInstance.close(items);
     };
