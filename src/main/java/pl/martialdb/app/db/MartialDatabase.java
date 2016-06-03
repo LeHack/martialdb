@@ -15,7 +15,10 @@
  *
  *  MODIFICATION HISTORY
  *  ----------------------------------------------------------------------------
- *  25-Apr-2014  Initial
+ *  25-Apr-2016 Initial
+ *  29-Jun-2016 Rewrote most of the module. Connections are left open and reused.
+ *              Added simpler methods to execute queries.
+ *  01-Jun-2016 Updated query execution methods to allow for inserts/updates.
  *  ----------------------------------------------------------------------------
  */
 package pl.martialdb.app.db;
@@ -26,35 +29,38 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import pl.martialdb.app.rest.RestData;
 
 public class MartialDatabase {
-    private DataSource _dataSource;
-    
+    private final Connection dbConnection;
     private static final org.apache.log4j.Logger appLog = org.apache.log4j.Logger.getLogger("appLog");
-    
-    public MartialDatabase(){
+
+    public MartialDatabase(Connection...conn){
+        this.dbConnection = (conn.length > 0 ? conn[0] : getConnection());
+    }
+    private Connection getConnection() {
+        Connection conn = null;
         try {
             Context initialContext = new InitialContext();
             Context environmentContext = (Context) initialContext.lookup("java:comp/env");
             String dataResourceName = "jdbc/MartialDB";
-            _dataSource = (DataSource) environmentContext.lookup(dataResourceName);            
-        } catch (NamingException e) {
-            appLog.error(e.getMessage());
+            DataSource ds = (DataSource) environmentContext.lookup(dataResourceName);
+            conn = ds.getConnection();
+        } catch (NamingException | SQLException e) {
+            appLog.error("Error preparing DB connection", e);
         }
+        return conn;
     }
-    
     public String getJsonString(String query){
         StringWriter stringWriter = new StringWriter();
 
@@ -68,29 +74,16 @@ public class MartialDatabase {
         objectMapper.registerModule(module);
         objectMapper.registerModule(module2);
 
-        
         try {
-            Connection conn = _dataSource.getConnection();
-            try {
-                Statement stm = conn.createStatement();
-                ResultSet rs = stm.executeQuery(query);
+            Statement stm = dbConnection.createStatement();
+            ResultSet rs = stm.executeQuery(query);
 
-                ObjectNode objectNode = objectMapper.createObjectNode();
-                objectNode.putPOJO("fields", rs.getMetaData());
-                objectNode.putPOJO("records", rs);
-                objectMapper.writeValue(stringWriter, objectNode);
-                
-            } catch (SQLException e) {
-                appLog.error(e.getMessage());
-            } catch (IOException e) {
-                appLog.error(e.getMessage());
-            } finally {
-                // Release connection back to the pool
-                if (conn != null) { conn.close(); }
-                conn = null; // prevent any future access
-            }
-        } catch (SQLException e) {
-                appLog.error(e.getMessage());
+            ObjectNode objectNode = objectMapper.createObjectNode();
+            objectNode.putPOJO("fields", rs.getMetaData());
+            objectNode.putPOJO("records", rs);
+            objectMapper.writeValue(stringWriter, objectNode);
+        } catch (IOException | SQLException e) {
+            appLog.error("Error executing query", e);
         }
         return stringWriter.toString();
     }
@@ -98,5 +91,57 @@ public class MartialDatabase {
     public String getExampleDataJsonString(){
         return getJsonString("SELECT * FROM t;");
     }
-   
+
+    public ResultSet runSimpleQuery(String query){
+        ResultSet rs = null;
+        try {
+            Statement stm = dbConnection.createStatement();
+            rs = stm.executeQuery(query);
+        } catch (SQLException e) {
+            appLog.error("Error executing query", e);
+        }
+        return rs;
+    }
+
+    public ResultSet runQuery(String query){
+        return runQuery(query, Arrays.asList());
+    }
+    public ResultSet runQuery(String query, Object single){
+        return runQuery(query, Arrays.asList(single));
+    }
+    public ResultSet runQuery(String query, List<Object> params){
+        CheckedFunction<PreparedStatement, Object> executor = stm -> stm.executeQuery();
+        return (ResultSet)_runQuery(query, params, executor);
+    }
+
+    public int runUpdate(String query){
+        return runUpdate(query, Arrays.asList());
+    }
+    public int runUpdate(String query, Object single){
+        return runUpdate(query, Arrays.asList(single));
+    }
+    public int runUpdate(String query, List<Object> params){
+        CheckedFunction<PreparedStatement, Object> executor = stm -> stm.executeUpdate();
+        return (Integer)_runQuery(query, params, executor);
+    }
+
+    @FunctionalInterface
+    public interface CheckedFunction<T, R> {
+       R apply(T t) throws SQLException;
+    }
+
+    private Object _runQuery(String query, List<Object> params, CheckedFunction<PreparedStatement, Object> exec){
+        Object rs = null;
+        try {
+            PreparedStatement stm = dbConnection.prepareStatement(query);
+            int i = 1;
+            for (Object p : params) {
+                stm.setObject(i++, p);
+            }
+            rs = exec.apply(stm);
+        } catch (SQLException e) {
+            appLog.error("Error executing query: " + query, e);
+        }
+        return rs;
+    }
 }

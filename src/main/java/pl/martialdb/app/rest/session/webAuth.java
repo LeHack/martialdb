@@ -18,16 +18,14 @@ package pl.martialdb.app.rest.session;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 import java.util.Vector;
 import javax.naming.NamingException;
-import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
-import org.ietf.jgss.GSSCredential;
 
+import pl.martialdb.app.model.User;
+import pl.martialdb.app.model.UserCollection;
 import pl.martialdb.app.rbac.Roles;
 
 public class webAuth implements Serializable {
@@ -39,7 +37,7 @@ public class webAuth implements Serializable {
     private Vector<String> groups = new Vector<String>();
     private Roles roles = new Roles();
 
-    private final Collection<String> usersDatabase = new ArrayList<>();    
+    private final UserCollection users;
 
     /**
      * Creates realm object.
@@ -48,8 +46,7 @@ public class webAuth implements Serializable {
      * @throws AAAException
      */
     public webAuth() throws NamingException {
-        usersDatabase.add("user");
-        usersDatabase.add("admin");
+        this.users = new UserCollection();
     }
 
     /**
@@ -70,13 +67,15 @@ public class webAuth implements Serializable {
                 "User name cannot be null").split("@");
 
         boolean isValid = false;
-        if ( usersDatabase.contains(fullUsername) ){
-            groups.add(fullUsername+'s');
+        User u = users.findByPassword(fullUsername, password);
+        if ( u != null ){
+            groups.add( u.getRole().toLowerCase() + "s" );
             roles.setRoles(roles.groupsToRoles(groups));
 
             if (roles.isEmpty()) {
                 appLog.warn("Authorization of " + fullUsername + " finished with failure.");
             } else {
+                u.updateLoginStamp();
                 appLog.info("Authentication of " + userDomain + " finished with success.");
                 isValid = true;
             }
