@@ -71,7 +71,7 @@ public class Group extends GroupMetaData {
     }
 
     public class GroupNotFoundException extends Exception {
-        private static final long serialVersionUID = 5078582624142838847L;
+        private static final long serialVersionUID = 2988745044975245455L;
 
         public GroupNotFoundException(String message) {
             super(message);

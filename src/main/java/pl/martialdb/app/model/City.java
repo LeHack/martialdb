@@ -66,7 +66,7 @@ public class City extends CityMetaData {
     }
 
     public class CityNotFoundException extends Exception {
-        private static final long serialVersionUID = 5078582624142838847L;
+        private static final long serialVersionUID = 757048583035850710L;
 
         public CityNotFoundException(String message) {
             super(message);
