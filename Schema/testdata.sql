@@ -19,3 +19,8 @@ INSERT INTO "karateka" VALUES(4,1,'Zdzisław','Nowy','zdzislaw@nowy.pl',NULL,NUL
 INSERT INTO "user" VALUES(1,'john','$2a$10$oWsUXmZJ4k3Dhyie/Vaf.eNjAq05XnWp7IlkLWDxKd6LzsAc77lNu','John','Wayne','john@wayne.com','ADMIN',1,'2016-05-28 11:42:21');
 INSERT INTO "user" VALUES(2,'clint','$2a$10$8GUeoIdpnLdpNFXMGk9o3Oz7jKNlmAKj.87GlWUBWAiKgLMGhmEjW','Clint','Eastwood','clint@eastwood.com','ADMIN',1,'2016-05-28 11:44:28');
 INSERT INTO "user" VALUES(3,'gary','$2a$10$VBqtT8b8ZsTpNzq8K00i6.01IwYHNcoRv0h/tQx.0650EOD8u.uqm','Gary','Cooper','gary@cooper.com','USER',2,'2016-05-28 11:46:41');
+
+/* Test events data */
+INSERT INTO "events" VALUES(1,2,'14ty staż w Krakowie','2016-05-14','SEMINAR');
+INSERT INTO "events" VALUES(2,1,'40ty obóz sportowy w Zakopanem','2016-06-18','CAMP');
+INSERT INTO "events" VALUES(3,2,'Pokaz na konwencie kultury Japońskiej','2016-08-13','SHOW');

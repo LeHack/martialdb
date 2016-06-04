@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS "events";
 DROP TABLE IF EXISTS "karateka";
 DROP TABLE IF EXISTS "training_group";
 DROP TABLE IF EXISTS "user";
