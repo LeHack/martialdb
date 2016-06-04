@@ -1,13 +1,13 @@
 var app = angular.module('app').controller("DataController", function ($scope, $filter, $http, $interval, $log, $modal, feedback) {
 
-    $scope.title = "Example data";
+    $scope.title = "Karatecy";
     feedback.clearAll();
 
     $scope.fields = [];
     $scope.records = [];
 
     $scope.loadData = function () {
-        $http.get('rs/data').success(function (data) {
+        $http.get('rs/karateka').success(function (data) {
             $scope.fields = data.fields;
             $scope.records = data.records;
         });
