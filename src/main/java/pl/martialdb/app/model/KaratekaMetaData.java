@@ -10,6 +10,7 @@ public class KaratekaMetaData extends BaseMetaData {
     @SuppressWarnings("serial")
     public KaratekaMetaData() {
         super(
+            "karateka",
             Arrays.asList(
                 "id", "group_id", "name", "surname", "email", "telephone", "address", "city",
                 "rank_type", "rank_level", "signup", "birthdate", "status"

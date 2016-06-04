@@ -24,10 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import pl.martialdb.app.db.MartialDatabase;
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
 public class Karateka extends KaratekaMetaData {
     final MartialDatabase db;
-    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
     private Integer id, groupId;
     private String name, surname, email, telephone, address, city;
@@ -39,15 +39,15 @@ public class Karateka extends KaratekaMetaData {
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public Karateka(int id, MartialDatabase...db) throws NoSuchKaratekaException {
+    public Karateka(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
         logger.debug("Creating Karateka instance for id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from karateka where id = ?", id
+            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
         );
         try {
             if (row.isClosed())
-                throw new NoSuchKaratekaException("No Karateka found for id: " + id);
+                throw new ObjectNotFoundException("No Karateka found for id: " + id);
             row.next();
         } catch (SQLException e) {
             logger.error("SQL Error when constructing karateka object", e);
@@ -122,13 +122,5 @@ public class Karateka extends KaratekaMetaData {
 
     public Date getBirthdate() {
         return this.birthdate;
-    }
-
-    public class NoSuchKaratekaException extends Exception {
-        private static final long serialVersionUID = 5078582624142838847L;
-
-        public NoSuchKaratekaException(String message) {
-            super(message);
-        }
     }
 }

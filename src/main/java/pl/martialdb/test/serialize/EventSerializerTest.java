@@ -11,16 +11,17 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pl.martialdb.app.model.EventCollection;
-import pl.martialdb.app.serialize.EventSerializer;
+import pl.martialdb.app.serialize.CommonSerializer;
 import pl.martialdb.app.test.Common;
 
 public class EventSerializerTest extends Common {
     @Test
     public final void testAsJSON() {
         EventCollection ec = new EventCollection(db);
-        EventSerializer es = new EventSerializer();
+        ec.filter();
 
-        String serialized = es.asJSON( ec.filter() );
+        CommonSerializer cs = new CommonSerializer();
+        String serialized = cs.asJSON( ec );
         ObjectMapper mapper = new ObjectMapper();
         try {
             @SuppressWarnings("unchecked")

@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.Group;
-import pl.martialdb.app.model.Group.GroupNotFoundException;
 import pl.martialdb.app.test.Common;
 
 public class GroupTest extends Common {
     @Test
-    public final void testGroupIntMartialDatabaseArray() throws GroupNotFoundException {
+    public final void testGroupIntMartialDatabaseArray() throws ObjectNotFoundException {
         Group g1 = new Group(1, db);
         assertEquals(g1.getName(), "10 - 8 kyu");
 
@@ -24,16 +24,16 @@ public class GroupTest extends Common {
         try {
             new Group(10, db);
         }
-        catch (GroupNotFoundException e) {
+        catch (ObjectNotFoundException e) {
             groupNotFound = e;
         }
         assertNotNull(groupNotFound);
-        assertEquals(groupNotFound.getClass(), GroupNotFoundException.class);
+        assertEquals(groupNotFound.getClass(), ObjectNotFoundException.class);
         assertEquals(groupNotFound.getMessage(), "No Group found for id: 10");
     }
 
     @Test
-    public final void testGetId() throws GroupNotFoundException {
+    public final void testGetId() throws ObjectNotFoundException {
         Group g1 = new Group(1, db);
         assertEquals(g1.getId(), 1);
 
@@ -42,7 +42,7 @@ public class GroupTest extends Common {
     }
 
     @Test
-    public final void testGetCityId() throws GroupNotFoundException {
+    public final void testGetCityId() throws ObjectNotFoundException {
         Group g1 = new Group(1, db);
         assertEquals(g1.getCityId(), 1);
 
@@ -51,7 +51,7 @@ public class GroupTest extends Common {
     }
 
     @Test
-    public final void testGetName() throws GroupNotFoundException {
+    public final void testGetName() throws ObjectNotFoundException {
         Group g1 = new Group(1, db);
         assertEquals(g1.getName(), "10 - 8 kyu");
 

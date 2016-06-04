@@ -2,51 +2,45 @@ package pl.martialdb.app.model;
 
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
+import pl.martialdb.app.common.BaseCollection;
+import pl.martialdb.app.common.BaseFilter;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class GroupCollection extends Group {
-    private final Collection<Group> groups;
+public class GroupCollection extends BaseCollection {
 
+    // Standard constructor
     public GroupCollection(MartialDatabase...db) {
-        super(db);
-        this.groups = getAll();
-    }
-
-    private Collection<Group> getAll() {
-        Collection<Group> groups = new ArrayList<>();
-        ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from training_group order by id"
+        super(
+            (db.length > 0 ? db[0] : new MartialDatabase()),
+            new GroupMetaData()
         );
-        try {
-            while (rows.next()) {
-                Group k = new Group(this.db);
-                k.init(rows);
-                groups.add(k);
-            }
-        } catch (SQLException e) {
-            logger.error("Error when creating Group collection", e);
-        }
-        return groups;
     }
 
-    public Collection<Group> filter(GroupFilter...filter) {
-        Collection<Group> result = new ArrayList<>();
-        Iterator<Group> iter = this.groups.iterator();
+    // Single object collection
+    public GroupCollection(Group k) {
+        super(k);
+    }
 
-        GroupFilter f = (filter.length > 0 ? filter[0] : new GroupFilter());
-        while (iter.hasNext()) {
-            Group k = iter.next();
-            if (!f.check( "cityId", k.getCityId() )) {
-                continue;
-            }
-            result.add( k );
+    @Override
+    protected Object initObject(ResultSet row) {
+        Group g = new Group(db);
+        g.init(row);
+        return g;
+    }
+
+    @Override
+    protected BaseFilter getDefaultFilter() {
+        return new GroupFilter();
+    }
+
+    @Override
+    protected boolean filter(BaseFilter f, Object obj) {
+        Group g = (Group) obj;
+        boolean result = true;
+        if (!f.check( "cityId", g.getCityId() )) {
+            result = false;
         }
-
         return result;
     }
 }

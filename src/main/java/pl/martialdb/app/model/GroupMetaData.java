@@ -10,6 +10,7 @@ public class GroupMetaData extends BaseMetaData {
     @SuppressWarnings("serial")
     public GroupMetaData() {
         super(
+            "training_group",
             Arrays.asList("id", "city_id", "name"),
             new HashMap<String, Integer>(){{
                 put("id",       Types.INTEGER);

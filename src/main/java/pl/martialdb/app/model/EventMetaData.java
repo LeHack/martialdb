@@ -10,6 +10,7 @@ public class EventMetaData extends BaseMetaData {
     @SuppressWarnings("serial")
     public EventMetaData() {
         super(
+            "events",
             Arrays.asList("id", "city_id", "name", "date", "type"),
             new HashMap<String, Integer>(){{
                 put("id",       Types.INTEGER);

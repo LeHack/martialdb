@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.City;
-import pl.martialdb.app.model.City.CityNotFoundException;
 import pl.martialdb.app.test.Common;
 
 public class CityTest extends Common {
     @Test
-    public final void testCityIntMartialDatabaseArray() throws CityNotFoundException {
+    public final void testCityIntMartialDatabaseArray() throws ObjectNotFoundException {
         City c1 = new City(1, db);
         assertEquals(c1.getName(), "Kołobrzeg");
 
@@ -21,16 +21,16 @@ public class CityTest extends Common {
         try {
             new City(10, db);
         }
-        catch (CityNotFoundException e) {
+        catch (ObjectNotFoundException e) {
             cityNotFound = e;
         }
         assertNotNull(cityNotFound);
-        assertEquals(cityNotFound.getClass(), CityNotFoundException.class);
+        assertEquals(cityNotFound.getClass(), ObjectNotFoundException.class);
         assertEquals(cityNotFound.getMessage(), "No City found for id: 10");
     }
 
     @Test
-    public final void testGetId() throws CityNotFoundException {
+    public final void testGetId() throws ObjectNotFoundException {
         City c1 = new City(1, db);
         assertEquals(c1.getId(), 1);
 
@@ -39,7 +39,7 @@ public class CityTest extends Common {
     }
 
     @Test
-    public final void testGetName() throws CityNotFoundException {
+    public final void testGetName() throws ObjectNotFoundException {
         City c1 = new City(1, db);
         assertEquals(c1.getName(), "Kołobrzeg");
 

@@ -1,55 +1,48 @@
 package pl.martialdb.app.model;
 
-
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
+import pl.martialdb.app.common.BaseCollection;
+import pl.martialdb.app.common.BaseFilter;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class KaratekaCollection extends Karateka {
-    private final Collection<Karateka> karatekas;
+public class KaratekaCollection extends BaseCollection {
 
+    // Standard constructor
     public KaratekaCollection(MartialDatabase...db) {
-        super(db);
-        this.karatekas = getAll();
-    }
-
-    private Collection<Karateka> getAll() {
-        Collection<Karateka> karatekas = new ArrayList<>();
-        ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from karateka order by id"
+        super(
+            (db.length > 0 ? db[0] : new MartialDatabase()),
+            new KaratekaMetaData()
         );
-        try {
-            while (rows.next()) {
-                Karateka k = new Karateka(this.db);
-                k.init(rows);
-                karatekas.add(k);
-            }
-        } catch (SQLException e) {
-            logger.error("Error when creating Karateka collection", e);
-        }
-        return karatekas;
     }
 
-    public Collection<Karateka> filter(KaratekaFilter...filter) {
-        Collection<Karateka> result = new ArrayList<>();
-        Iterator<Karateka> iter = this.karatekas.iterator();
+    // Single object collection
+    public KaratekaCollection(Karateka k) {
+        super(k);
+    }
 
-        KaratekaFilter f = (filter.length > 0 ? filter[0] : new KaratekaFilter());
-        while (iter.hasNext()) {
-            Karateka k = iter.next();
-            if (!f.check( "status", k.getStatus() )) {
-                continue;
-            }
-            if (!f.check( "groupId", k.getGroupId() )) {
-                continue;
-            }
-            result.add( k );
+    @Override
+    protected Object initObject(ResultSet row) {
+        Karateka k = new Karateka(db);
+        k.init(row);
+        return k;
+    }
+
+    @Override
+    protected BaseFilter getDefaultFilter() {
+        return new KaratekaFilter();
+    }
+
+    @Override
+    protected boolean filter(BaseFilter f, Object obj) {
+        Karateka k = (Karateka) obj;
+        boolean result = true;
+        if (!f.check( "status", k.getStatus() )) {
+            result = false;
         }
-
+        else if (!f.check( "groupId", k.getGroupId() )) {
+            result = false;
+        }
         return result;
     }
 }

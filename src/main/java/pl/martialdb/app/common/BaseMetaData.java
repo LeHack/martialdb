@@ -7,14 +7,17 @@ import java.util.Set;
 import jersey.repackaged.com.google.common.base.Joiner;
 
 public class BaseMetaData {
+    protected static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
+
+    protected final String tblName, sqlFieldsStr;
     protected final List<String> sqlFields;
-    protected final String sqlFieldsStr;
     private final Map<String, Integer> meta;
 
-    public BaseMetaData(List<String> fields, Map<String, Integer> fieldTypes) {
-        this.sqlFields = fields;
+    public BaseMetaData(String tableName, List<String> fields, Map<String, Integer> fieldTypes) {
+        this.tblName      = tableName;
+        this.sqlFields    = fields;
         this.sqlFieldsStr = Joiner.on(",").join(sqlFields);
-        this.meta = fieldTypes;
+        this.meta         = fieldTypes;
     }
 
     public final Set<String> getFields() {

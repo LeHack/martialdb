@@ -11,16 +11,17 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pl.martialdb.app.model.KaratekaCollection;
-import pl.martialdb.app.serialize.KaratekaSerializer;
+import pl.martialdb.app.serialize.CommonSerializer;
 import pl.martialdb.app.test.Common;
 
 public class KaratekaSerializerTest extends Common {
     @Test
     public final void testAsJSON() {
         KaratekaCollection kc = new KaratekaCollection(db);
-        KaratekaSerializer ks = new KaratekaSerializer();
+        kc.filter();
 
-        String serialized = ks.asJSON( kc.filter() );
+        CommonSerializer cs = new CommonSerializer();
+        String serialized = cs.asJSON( kc );
         ObjectMapper mapper = new ObjectMapper();
         try {
             @SuppressWarnings("unchecked")

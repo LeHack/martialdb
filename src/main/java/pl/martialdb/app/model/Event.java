@@ -24,10 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import pl.martialdb.app.db.MartialDatabase;
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
 public class Event extends EventMetaData {
     final MartialDatabase db;
-    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
     private Integer id, cityId;
     private Date date;
@@ -38,15 +38,15 @@ public class Event extends EventMetaData {
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public Event(int id, MartialDatabase...db) throws EventNotFoundException {
+    public Event(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
         logger.debug("Creating Event instance for id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from events where id = ?", id
+            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
         );
         try {
             if (row.isClosed())
-                throw new EventNotFoundException("No Event found for id: " + id);
+                throw new ObjectNotFoundException("No Event found for id: " + id);
             row.next();
         } catch (SQLException e) {
             logger.error("Error when constructing event object", e);
@@ -85,13 +85,5 @@ public class Event extends EventMetaData {
 
     public EventType getType() {
         return this.type;
-    }
-
-    public class EventNotFoundException extends Exception {
-        private static final long serialVersionUID = 5078582624142838847L;
-
-        public EventNotFoundException(String message) {
-            super(message);
-        }
     }
 }

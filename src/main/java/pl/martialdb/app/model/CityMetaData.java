@@ -10,6 +10,7 @@ public class CityMetaData extends BaseMetaData {
     @SuppressWarnings("serial")
     public CityMetaData() {
         super(
+            "cities",
             Arrays.asList("id", "name"),
             new HashMap<String, Integer>(){{
                 put("id",       Types.INTEGER);

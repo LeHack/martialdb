@@ -1,4 +1,4 @@
-package pl.martialdb.app.common;
+package pl.martialdb.app.serialize;
 
 import java.io.IOException;
 
@@ -7,10 +7,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-public class SerializeMetaData extends StdSerializer<BaseMetaData> {
+import pl.martialdb.app.common.BaseMetaData;
+
+public class MetaDataSerializer extends StdSerializer<BaseMetaData> {
     private static final long serialVersionUID = -8972250736573074834L;
 
-    public SerializeMetaData(Class<BaseMetaData> t) {
+    public MetaDataSerializer(Class<BaseMetaData> t) {
         super(t);
     }
 

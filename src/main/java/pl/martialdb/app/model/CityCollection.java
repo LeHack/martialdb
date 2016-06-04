@@ -2,38 +2,43 @@ package pl.martialdb.app.model;
 
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
 
+import pl.martialdb.app.common.BaseCollection;
+import pl.martialdb.app.common.BaseFilter;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class CityCollection extends City {
-    private final Collection<City> cities;
+public class CityCollection extends BaseCollection {
 
+    // Standard constructor
     public CityCollection(MartialDatabase...db) {
-        super(db);
-        this.cities = init();
-    }
-
-    private Collection<City> init() {
-        Collection<City> data = new ArrayList<>();
-        ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from cities order by id"
+        super(
+            (db.length > 0 ? db[0] : new MartialDatabase()),
+            new CityMetaData()
         );
-        try {
-            while (rows.next()) {
-                City k = new City(this.db);
-                k.init(rows);
-                data.add(k);
-            }
-        } catch (SQLException e) {
-            logger.error("Error when creating City collection", e);
-        }
-        return data;
     }
 
-    public Collection<City> getAll() {
-        return this.cities;
+    // Single object collection
+    public CityCollection(City c) {
+        super(c);
+    }
+
+    @Override
+    protected Object initObject(ResultSet row) {
+        City c = new City(db);
+        c.init(row);
+        return c;
+    }
+
+    /*
+     * Filtering is disabled for Cities, as there's nothing to filter by
+     */
+    @Override
+    protected BaseFilter getDefaultFilter() {
+        return new BaseFilter();
+    }
+
+    @Override
+    protected boolean filter(BaseFilter f, Object obj) {
+        return true;
     }
 }

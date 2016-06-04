@@ -2,52 +2,48 @@ package pl.martialdb.app.model;
 
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
+import pl.martialdb.app.common.BaseCollection;
+import pl.martialdb.app.common.BaseFilter;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class EventCollection extends Event {
-    private final Collection<Event> events;
+public class EventCollection extends BaseCollection {
 
+    // Standard constructor
     public EventCollection(MartialDatabase...db) {
-        super(db);
-        this.events = getAll();
-    }
-
-    private Collection<Event> getAll() {
-        Collection<Event> evs = new ArrayList<>();
-        ResultSet rows = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from events order by id"
+        super(
+            (db.length > 0 ? db[0] : new MartialDatabase()),
+            new EventMetaData()
         );
-        try {
-            while (rows.next()) {
-                Event e = new Event(this.db);
-                e.init(rows);
-                evs.add(e);
-            }
-        } catch (SQLException e) {
-            logger.error("Error when creating Event collection", e);
-        }
-        return evs;
     }
 
-    public Collection<Event> filter(EventFilter...filter) {
-        Collection<Event> result = new ArrayList<>();
-        Iterator<Event> iter = this.events.iterator();
+    // Single object collection
+    public EventCollection(Event e) {
+        super(e);
+    }
 
-        EventFilter f = (filter.length > 0 ? filter[0] : new EventFilter());
-        while (iter.hasNext()) {
-            Event e = iter.next();
-            if (!f.check( "cityId", e.getCityId() )) {
-                continue;
-            }
-            if (!f.check( "type", e.getType() )) {
-                continue;
-            }
-            result.add( e );
+    @Override
+    protected Object initObject(ResultSet row) {
+        Event e = new Event(db);
+        e.init(row);
+        return e;
+    }
+
+    @Override
+    protected BaseFilter getDefaultFilter() {
+        return new EventFilter();
+    }
+
+    @Override
+    protected boolean filter(BaseFilter f, Object obj) {
+        Event e = (Event) obj;
+        boolean result = true;
+
+        if (!f.check( "cityId", e.getCityId() )) {
+            result = false;
+        }
+        else if (!f.check( "type", e.getType() )) {
+            result = false;
         }
 
         return result;

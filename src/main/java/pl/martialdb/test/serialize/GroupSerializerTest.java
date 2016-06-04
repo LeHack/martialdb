@@ -11,16 +11,17 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pl.martialdb.app.model.GroupCollection;
-import pl.martialdb.app.serialize.GroupSerializer;
+import pl.martialdb.app.serialize.CommonSerializer;
 import pl.martialdb.app.test.Common;
 
 public class GroupSerializerTest extends Common {
     @Test
     public final void testAsJSON() {
         GroupCollection gc = new GroupCollection(db);
-        GroupSerializer gs = new GroupSerializer();
+        gc.filter();
 
-        String serialized = gs.asJSON( gc.filter() );
+        CommonSerializer cs = new CommonSerializer();
+        String serialized = cs.asJSON( gc );
         ObjectMapper mapper = new ObjectMapper();
         try {
             @SuppressWarnings("unchecked")

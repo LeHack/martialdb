@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     "surname" VARCHAR NOT NULL,
     "email" VARCHAR NOT NULL,
     "role" VARCHAR NOT NULL,
-    "defaultCity" INTEGER NOT NULL REFERENCES cities,
+    "default_city_id" INTEGER NOT NULL REFERENCES cities,
     "stamp" DATETIME DEFAULT (CURRENT_TIMESTAMP)
 );
 

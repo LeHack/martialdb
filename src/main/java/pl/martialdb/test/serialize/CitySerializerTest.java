@@ -11,16 +11,15 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import pl.martialdb.app.model.CityCollection;
-import pl.martialdb.app.serialize.CitySerializer;
+import pl.martialdb.app.serialize.CommonSerializer;
 import pl.martialdb.app.test.Common;
 
 public class CitySerializerTest extends Common {
     @Test
     public final void testAsJSON() {
         CityCollection cc = new CityCollection(db);
-        CitySerializer cs = new CitySerializer();
-
-        String serialized = cs.asJSON( cc.getAll() );
+        CommonSerializer cs = new CommonSerializer();
+        String serialized = cs.asJSON( cc );
         ObjectMapper mapper = new ObjectMapper();
         try {
             @SuppressWarnings("unchecked")

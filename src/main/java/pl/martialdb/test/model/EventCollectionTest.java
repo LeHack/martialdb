@@ -2,7 +2,6 @@ package pl.martialdb.test.model;
 
 import static org.junit.Assert.*;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Test;
@@ -13,14 +12,15 @@ import pl.martialdb.app.model.EventFilter;
 import pl.martialdb.app.model.EventType;
 import pl.martialdb.app.test.Common;
 
+@SuppressWarnings("unchecked")
 public class EventCollectionTest extends Common {
     @Test
     public final void testFilterDefaults() {
         EventCollection ec = new EventCollection(db);
 
-        Collection<Event> events = ec.filter();
-        assertEquals( 3, events.size() );
-        Iterator<Event> iter = events.iterator();
+        ec.filter();
+        assertEquals( 3, ec.getSize() );
+        Iterator<Event> iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getName(), "14ty staż w Krakowie");
         assertEquals( iter.next().getName(), "40ty obóz sportowy w Zakopanem");
         assertEquals( iter.next().getName(), "Pokaz na konwencie kultury Japońskiej");
@@ -29,18 +29,18 @@ public class EventCollectionTest extends Common {
     @Test
     public final void testFilterByCity() {
         EventCollection ec = new EventCollection(db);
-
         EventFilter f = new EventFilter();
         f.set("cityId", 1);
-        Collection<Event> events = ec.filter(f);
-        assertEquals( 1, events.size() );
-        Iterator<Event> iter = events.iterator();
+        ec.filter(f);
+        assertEquals( 1, ec.getSize() );
+        Iterator<Event> iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getId(), 2);
 
+        ec = new EventCollection(db);
         f.set("cityId", 2);
-        events = ec.filter(f);
-        assertEquals( 2, events.size() );
-        iter = events.iterator();
+        ec.filter(f);
+        assertEquals( 2, ec.getSize() );
+        iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getId(), 1);
         assertEquals( iter.next().getId(), 3);
     }
@@ -48,45 +48,46 @@ public class EventCollectionTest extends Common {
     @Test
     public final void testFilterByType() {
         EventCollection ec = new EventCollection(db);
-
         EventFilter f = new EventFilter();
         f.set("type", EventType.CAMP);
-        Collection<Event> events = ec.filter(f);
-        assertEquals( 1, events.size() );
-        Iterator<Event> iter = events.iterator();
+        ec.filter(f);
+        assertEquals( 1, ec.getSize() );
+        Iterator<Event> iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getId(), 2);
 
+        ec = new EventCollection(db);
         f.set("type", EventType.SEMINAR);
-        events = ec.filter(f);
-        assertEquals( 1, events.size() );
-        iter = events.iterator();
+        ec.filter(f);
+        assertEquals( 1, ec.getSize() );
+        iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getId(), 1);
     }
 
     @Test
     public final void testFilterByTypeAndCity() {
         EventCollection ec = new EventCollection(db);
-
         EventFilter f = new EventFilter();
         f.set("cityId", 1);
         f.set("type", EventType.CAMP);
-        Collection<Event> events = ec.filter(f);
-        assertEquals( 1, events.size() );
-        Iterator<Event> iter = events.iterator();
+        ec.filter(f);
+        assertEquals( 1, ec.getSize() );
+        Iterator<Event> iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getId(), 2);
 
-        f = new EventFilter();
+        ec = new EventCollection(db);
+        f  = new EventFilter();
         f.set("cityId", 2);
         f.set("type", EventType.CAMP);
-        events = ec.filter(f);
-        assertEquals( 0, events.size() );
+        ec.filter(f);
+        assertEquals( 0, ec.getSize() );
 
-        f = new EventFilter();
+        ec = new EventCollection(db);
+        f  = new EventFilter();
         f.set("cityId", 2);
         f.set("type", EventType.SHOW);
-        events = ec.filter(f);
-        assertEquals( 1, events.size() );
-        iter = events.iterator();
+        ec.filter(f);
+        assertEquals( 1, ec.getSize() );
+        iter = (Iterator<Event>) ec.getIterator();
         assertEquals( iter.next().getId(), 3);
     }
 }

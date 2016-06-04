@@ -27,39 +27,32 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import jersey.repackaged.com.google.common.base.Joiner;
 import pl.martialdb.app.db.MartialDatabase;
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class User {
+public class User extends UserMetaData {
     final MartialDatabase db;
-    static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
     private Integer id, defaultCity;
     private String login, pass, name, surname, email, role;
     private Date stamp;
 
-    protected List<String> sqlFields = Arrays.asList(
-        "id", "login", "pass", "name", "surname", "email", "role", "defaultCity", "stamp"
-    );
-    protected String sqlFieldsStr = Joiner.on(",").join(sqlFields);
-
     public User(MartialDatabase...db){
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
     }
 
-    public User(int id, MartialDatabase...db) throws NoSuchUserException {
+    public User(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
         logger.debug("Creating User instance for user id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from user where id = ?", id
+            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
         );
         try {
             if (row.isClosed())
-                throw new NoSuchUserException("No User found for id: " + id);
+                throw new ObjectNotFoundException("No User found for id: " + id);
             row.next();
         } catch (SQLException e) {
             logger.error("Error when constructing user object", e);
@@ -77,7 +70,7 @@ public class User {
             this.surname     = data.getString("surname");
             this.email       = data.getString("email");
             this.role        = data.getString("role"); // TODO, change to ENUM
-            this.defaultCity = data.getInt("defaultCity");
+            this.defaultCity = data.getInt("default_city_id");
             this.stamp       = dateFormat.parse( data.getString("stamp") );
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing user", e);
@@ -119,13 +112,5 @@ public class User {
     public void updateLoginStamp() {
         String now = dateFormat.format(new Date());
         this.db.runUpdate("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, this.id));
-    }
-
-    public class NoSuchUserException extends Exception {
-        private static final long serialVersionUID = 5078582624142838847L;
-
-        public NoSuchUserException(String message) {
-            super(message);
-        }
     }
 }
