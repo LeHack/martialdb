@@ -69,7 +69,7 @@ public class webAuth implements Serializable {
         boolean isValid = false;
         User u = users.findByPassword(fullUsername, password);
         if ( u != null ){
-            groups.add( u.getRole().toLowerCase() + "s" );
+            groups.add( u.getRole().toString().toLowerCase() );
             roles.setRoles(roles.groupsToRoles(groups));
 
             if (roles.isEmpty()) {

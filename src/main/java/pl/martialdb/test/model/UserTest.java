@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.User;
+import pl.martialdb.app.rbac.RoleType;
 import pl.martialdb.app.test.Common;
 
 public class UserTest extends Common {
@@ -69,9 +70,9 @@ public class UserTest extends Common {
     @Test
     public final void testGetRole() throws ObjectNotFoundException {
         User u1 = new User(1, db);
-        assertEquals(u1.getRole(), "ADMIN");
+        assertEquals(u1.getRole(), RoleType.ADMIN);
         User u3 = new User(3, db);
-        assertEquals(u3.getRole(), "USER");
+        assertEquals(u3.getRole(), RoleType.USER);
     }
 
     @Test

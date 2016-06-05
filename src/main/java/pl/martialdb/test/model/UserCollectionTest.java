@@ -9,6 +9,7 @@ import org.junit.Test;
 import pl.martialdb.app.common.BaseFilter;
 import pl.martialdb.app.model.User;
 import pl.martialdb.app.model.UserCollection;
+import pl.martialdb.app.rbac.RoleType;
 import pl.martialdb.app.test.Common;
 
 public class UserCollectionTest extends Common {
@@ -22,7 +23,7 @@ public class UserCollectionTest extends Common {
         User u = uc.findByPassword("john", new StringBuffer("admin"));
         assertEquals( u.getId(), 1 );
         assertEquals( u.getName(), "John Wayne" );
-        assertEquals( u.getRole(), "ADMIN" );
+        assertEquals( u.getRole(), RoleType.ADMIN );
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +31,7 @@ public class UserCollectionTest extends Common {
     public final void testFilterByStatus() {
         UserCollection uc = new UserCollection(db);
         BaseFilter f = new BaseFilter();
-        f.set("role", "ADMIN");
+        f.set("role", RoleType.ADMIN);
         uc.filter(f);
         assertEquals( 2, uc.getSize() );
         Iterator<User> iter = (Iterator<User>) uc.getIterator();
@@ -38,7 +39,7 @@ public class UserCollectionTest extends Common {
         assertEquals( iter.next().getName(), "Clint Eastwood");
 
         uc = new UserCollection(db);
-        f.set("role", "USER");
+        f.set("role", RoleType.USER);
         uc.filter(f);
         assertEquals( 1, uc.getSize() );
         iter = (Iterator<User>) uc.getIterator();

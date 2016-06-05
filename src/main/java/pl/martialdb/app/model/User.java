@@ -32,13 +32,15 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
+import pl.martialdb.app.rbac.RoleType;
 
 public class User extends UserMetaData {
     final MartialDatabase db;
 
     private Integer id, defaultCity;
-    private String login, pass, name, surname, email, role;
+    private String login, pass, name, surname, email;
     private Date stamp;
+    private RoleType role;
 
     public User(MartialDatabase...db){
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
@@ -69,7 +71,7 @@ public class User extends UserMetaData {
             this.name        = data.getString("name");
             this.surname     = data.getString("surname");
             this.email       = data.getString("email");
-            this.role        = data.getString("role"); // TODO, change to ENUM
+            this.role        = RoleType.valueOf( data.getString("role") );
             this.defaultCity = data.getInt("default_city_id");
             this.stamp       = dateFormat.parse( data.getString("stamp") );
         } catch (SQLException | ParseException e) {
@@ -93,7 +95,7 @@ public class User extends UserMetaData {
         return this.defaultCity;
     }
 
-    public String getRole() {
+    public RoleType getRole() {
         return this.role;
     }
 

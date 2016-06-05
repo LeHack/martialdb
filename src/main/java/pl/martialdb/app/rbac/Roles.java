@@ -27,11 +27,11 @@ public class Roles {
 
     public Roles(){;}
 
-    public void Roles(Set<RoleType> Roles){
+    public Roles(Set<RoleType> Roles){
         this.setRoles( Roles );
     }
     
-    public void Roles(Collection<String> groups){
+    public Roles(Collection<String> groups){
         this.setRoles( groupsToRoles(groups) );
     }
 
@@ -45,8 +45,8 @@ public class Roles {
     
     public Set<RoleType> groupToRoles( String group ){
         switch (group) {
-            case "users": return EnumSet.of(RoleType.USERS);
-            case "admins": return EnumSet.of(RoleType.USERS, RoleType.ADMINS);
+            case "user": return EnumSet.of(RoleType.USER);
+            case "admin": return EnumSet.of(RoleType.USER, RoleType.ADMIN);
             default: return EnumSet.noneOf(RoleType.class);
         }
     }

@@ -17,6 +17,6 @@
 package pl.martialdb.app.rbac;
 
 public enum RoleType {
-    USERS,
-    ADMINS
+    USER,
+    ADMIN
 };

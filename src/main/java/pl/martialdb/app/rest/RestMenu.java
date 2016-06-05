@@ -53,7 +53,7 @@ public class RestMenu {
             JsonArrayBuilder menuItems = Json.createArrayBuilder();
             JsonArrayBuilder subMenuItems = Json.createArrayBuilder();
             
-            if ( webSession.hasRole(httpRequest, RoleType.USERS) ){
+            if ( webSession.hasRole(httpRequest, RoleType.USER) ){
                 subMenuItems.add(Json.createObjectBuilder()
                         .add("name", "Example data")
                         .add("url", "data")
@@ -73,7 +73,7 @@ public class RestMenu {
                           .add("sub", subMenuItems).build()
                 );
             }
-            if ( webSession.hasRole(httpRequest, RoleType.ADMINS) ){
+            if ( webSession.hasRole(httpRequest, RoleType.ADMIN) ){
                 subMenuItems.add(Json.createObjectBuilder()
                         .add("name", "Admins")
                         .add("url", "admins")
