@@ -1,44 +1,46 @@
 package pl.martialdb.app.model;
 
+
 import java.sql.ResultSet;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseFilter;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class KaratekaCollection extends BaseCollection {
+public class PresenceCollection extends BaseCollection {
 
     // Standard constructor
-    public KaratekaCollection(MartialDatabase...db) {
+    public PresenceCollection(MartialDatabase...db) {
         super(
             (db.length > 0 ? db[0] : new MartialDatabase()),
-            new KaratekaMetaData()
+            new PresenceMetaData()
         );
     }
 
     // Single object collection
-    public KaratekaCollection(Karateka k) {
-        super(k);
+    public PresenceCollection(Presence p) {
+        super(p);
     }
 
     @Override
     protected Object initObject(ResultSet row) {
-        Karateka k = new Karateka(db);
-        k.init(row);
-        return k;
+        Presence p = new Presence(db);
+        p.init(row);
+        return p;
     }
 
     @Override
     protected BaseFilter getDefaultFilter() {
-        return new KaratekaFilter();
+        return new BaseFilter();
     }
 
     @Override
     protected boolean filter(BaseFilter f, Object obj) {
-        Karateka k = (Karateka) obj;
+        Presence p = (Presence) obj;
         return (
-            f.check( "status", k.getStatus() )
-            && f.check( "groupId", k.getGroupId() )
+            f.check( "karatekaId", p.getKaratekaId() )
+            && f.check( "period", p.getPeriod() )
+            && f.check( "type", p.getType() )
         );
     }
 }

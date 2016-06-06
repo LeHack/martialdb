@@ -24,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseRest;
+import pl.martialdb.app.exceptions.MethodNotSupportedException;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.Karateka;
 import pl.martialdb.app.model.KaratekaCollection;
@@ -31,7 +32,7 @@ import pl.martialdb.app.model.KaratekaCollection;
 @Path("/karateka")
 @Produces(MediaType.APPLICATION_JSON)
 public class RestKarateka extends BaseRest {
-    public BaseCollection getObject(int id) throws ObjectNotFoundException {
+    public BaseCollection getObject(int id) throws ObjectNotFoundException, MethodNotSupportedException {
         appLog.trace("Fetching data for Karateka: " + id);
         return new KaratekaCollection( new Karateka(id) );
     }

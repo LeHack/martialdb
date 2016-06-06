@@ -37,15 +37,9 @@ public class EventCollection extends BaseCollection {
     @Override
     protected boolean filter(BaseFilter f, Object obj) {
         Event e = (Event) obj;
-        boolean result = true;
-
-        if (!f.check( "cityId", e.getCityId() )) {
-            result = false;
-        }
-        else if (!f.check( "type", e.getType() )) {
-            result = false;
-        }
-
-        return result;
+        return (
+            f.check( "cityId", e.getCityId() )
+            && f.check( "type", e.getType() )
+        );
     }
 }

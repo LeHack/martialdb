@@ -23,6 +23,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import pl.martialdb.app.common.BaseRest;
+import pl.martialdb.app.exceptions.MethodNotSupportedException;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.Group;
 import pl.martialdb.app.model.GroupCollection;
@@ -30,7 +31,7 @@ import pl.martialdb.app.model.GroupCollection;
 @Path("/group")
 @Produces(MediaType.APPLICATION_JSON)
 public class RestGroup extends BaseRest {
-    public GroupCollection getObject(int id) throws ObjectNotFoundException {
+    public GroupCollection getObject(int id) throws ObjectNotFoundException, MethodNotSupportedException {
         appLog.trace("Fetching data for Group: " + id);
         return new GroupCollection( new Group(id) );
     }

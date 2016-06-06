@@ -9,7 +9,7 @@ import jersey.repackaged.com.google.common.base.Joiner;
 public class BaseMetaData {
     protected static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
-    protected final String tblName, sqlFieldsStr;
+    protected final String tblName, sqlFieldsStr, defaultSortField;
     protected final List<String> sqlFields;
     private final Map<String, Integer> meta;
 
@@ -18,6 +18,7 @@ public class BaseMetaData {
         this.sqlFields    = fields;
         this.sqlFieldsStr = Joiner.on(",").join(sqlFields);
         this.meta         = fieldTypes;
+        this.defaultSortField = getDefaultSortField(fields);
     }
 
     public final Set<String> getFields() {
@@ -32,4 +33,7 @@ public class BaseMetaData {
         return meta.get(field);
     }
 
+    protected String getDefaultSortField(List<String> fields) {
+        return fields.get(0);
+    }
 }

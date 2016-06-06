@@ -23,6 +23,9 @@ public class SerializerFactory {
             case "EventCollection":
                 obj = new EventMetaData();
                 break;
+            case "PresenceCollection":
+                obj = new PresenceMetaData();
+                break;
             default:
                 throw new UnhandledTypeException("Cannot prepare object for: " + data.getClass().getName());
         }
@@ -47,6 +50,9 @@ public class SerializerFactory {
                 break;
             case "EventCollection":
                 obj = new EventSerializer(param);
+                break;
+            case "PresenceCollection":
+                obj = new PresenceSerializer(param);
                 break;
             default:
                 throw new UnhandledTypeException("Cannot prepare object for: " + data.getClass().getName());

@@ -37,10 +37,6 @@ public class GroupCollection extends BaseCollection {
     @Override
     protected boolean filter(BaseFilter f, Object obj) {
         Group g = (Group) obj;
-        boolean result = true;
-        if (!f.check( "cityId", g.getCityId() )) {
-            result = false;
-        }
-        return result;
+        return f.check( "cityId", g.getCityId() );
     }
 }

@@ -23,12 +23,14 @@ public abstract class BaseCollection {
     public BaseCollection(MartialDatabase db, BaseMetaData meta) {
         this.db = db;
         try {
-            ResultSet rows = db.runQuery(
-                "SELECT " + meta.sqlFieldsStr + " from " + meta.tblName + " order by id"
-            );
-            while (rows.next()) {
-                data.add( initObject(rows) );
-            }
+            String query = "SELECT " + meta.sqlFieldsStr + " from " + meta.tblName;
+            if (meta.defaultSortField != null)
+                query += " order by " + meta.defaultSortField;
+            ResultSet rows = db.runQuery(query);
+            // if there is no data in the table, we'll just have an empty collection
+            if (!rows.isClosed())
+                while (rows.next())
+                    data.add( initObject(rows) );
         } catch (SQLException e) {
             appLog.error("Error when initializing collection", e);
         }

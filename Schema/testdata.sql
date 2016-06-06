@@ -24,3 +24,9 @@ INSERT INTO "user" VALUES(3,'gary','$2a$10$VBqtT8b8ZsTpNzq8K00i6.01IwYHNcoRv0h/t
 INSERT INTO "events" VALUES(1,2,'14ty staż w Krakowie','2016-05-14','SEMINAR');
 INSERT INTO "events" VALUES(2,1,'40ty obóz sportowy w Zakopanem','2016-06-18','CAMP');
 INSERT INTO "events" VALUES(3,2,'Pokaz na konwencie kultury Japońskiej','2016-08-13','SHOW');
+
+/* Test presence data */
+INSERT INTO "presence" VALUES(1,'2016-05-09','WEEK',5,'BASIC');
+INSERT INTO "presence" ("karateka_id", "start") VALUES (1,'2016-06-04'),(2,'2016-06-04'),(3,'2016-06-04'),(4,'2016-06-04');
+INSERT INTO "presence" ("karateka_id", "count", "type", "start") VALUES (1,2,'EXTRA','2016-06-05'),(3,4,'EXTRA','2016-06-05');
+INSERT INTO "presence" ("karateka_id") VALUES (1);

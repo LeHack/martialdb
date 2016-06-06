@@ -22,6 +22,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import pl.martialdb.app.common.BaseRest;
+import pl.martialdb.app.exceptions.MethodNotSupportedException;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.Event;
 import pl.martialdb.app.model.EventCollection;
@@ -29,7 +30,7 @@ import pl.martialdb.app.model.EventCollection;
 @Path("/event")
 @Produces(MediaType.APPLICATION_JSON)
 public class RestEvent extends BaseRest {
-    public EventCollection getObject(int id) throws ObjectNotFoundException {
+    public EventCollection getObject(int id) throws ObjectNotFoundException, MethodNotSupportedException {
         appLog.trace("Fetching data for Event: " + id);
         return new EventCollection( new Event(id) );
     }

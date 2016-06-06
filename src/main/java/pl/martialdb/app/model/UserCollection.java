@@ -37,11 +37,7 @@ public class UserCollection extends BaseCollection {
     @Override
     protected boolean filter(BaseFilter f, Object obj) {
         User u = (User) obj;
-        boolean result = true;
-        if (!f.check( "role", u.getRole())) {
-            result = false;
-        }
-        return result;
+        return f.check( "role", u.getRole());
     }
 
     @SuppressWarnings("unchecked")

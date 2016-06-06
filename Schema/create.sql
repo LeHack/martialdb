@@ -46,3 +46,12 @@ CREATE TABLE "events" (
     "date" DATETIME NOT NULL,
     "type" VARCHAR NOT NULL
 );
+
+CREATE TABLE "presence" (
+    "karateka_id" INTEGER NOT NULL REFERENCES karateka,
+    "start" DATETIME NOT NULL DEFAULT CURRENT_DATE,
+    "period" VARCHAR NOT NULL DEFAULT DAY,
+    "count" INTEGER NOT NULL DEFAULT 1,
+    "type" VARCHAR NOT NULL DEFAULT BASIC
+);
+CREATE UNIQUE INDEX presence_day ON presence("karateka_id", "start", "type");
