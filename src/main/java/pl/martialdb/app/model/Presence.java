@@ -23,9 +23,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.el.MethodNotFoundException;
+
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 
-public class Presence extends PresenceMetaData {
+public class Presence extends PresenceMetaData implements IModel {
     public enum PresenceType { BASIC, EXTRA };
     public enum PresencePeriod { DAY, WEEK, MONTH };
     final MartialDatabase db;
@@ -50,6 +53,11 @@ public class Presence extends PresenceMetaData {
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing group", e);
         }
+    }
+
+    // Stub
+    public void save() {
+        throw new MethodNotFoundException("Saving Presence is not yet available");
     }
 
     public int getKaratekaId() {

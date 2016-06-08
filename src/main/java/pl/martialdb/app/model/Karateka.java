@@ -23,10 +23,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.el.MethodNotFoundException;
+
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class Karateka extends KaratekaMetaData {
+public class Karateka extends KaratekaMetaData implements IModel {
     final MartialDatabase db;
 
     private Integer id, groupId;
@@ -74,6 +77,11 @@ public class Karateka extends KaratekaMetaData {
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing karateka", e);
         }
+    }
+
+    // Stub
+    public void save() {
+        throw new MethodNotFoundException("Saving Karateka is not yet available");
     }
 
     public int getId() {

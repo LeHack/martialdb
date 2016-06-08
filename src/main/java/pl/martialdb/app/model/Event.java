@@ -23,10 +23,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.el.MethodNotFoundException;
+
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class Event extends EventMetaData {
+public class Event extends EventMetaData implements IModel {
     final MartialDatabase db;
 
     private Integer id, cityId;
@@ -65,6 +68,11 @@ public class Event extends EventMetaData {
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing group", e);
         }
+    }
+
+    // Stub
+    public void save() {
+        throw new MethodNotFoundException("Saving Events is not yet available");
     }
 
     public int getId() {

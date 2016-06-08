@@ -18,13 +18,17 @@ package pl.martialdb.app.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class City extends CityMetaData {
+public class City extends CityMetaData implements IModel {
     final MartialDatabase db;
 
+    private boolean newObject = true;
     private Integer id;
     private String name;
 
@@ -34,6 +38,7 @@ public class City extends CityMetaData {
 
     public City(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
+        this.newObject = false;
         logger.debug("Creating City instance for id: " + id);
         ResultSet row = this.db.runQuery(
             "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
@@ -55,6 +60,24 @@ public class City extends CityMetaData {
         } catch (SQLException e) {
             logger.error("Error when initializing city", e);
         }
+    }
+
+    // Simple approach first, optimize later
+    public void save() {
+        List<Object> params;
+        String query = "";
+
+        if (this.newObject) {
+            query = "INSERT INTO " + tblName + " ('name') VALUES (?)";
+            params = Arrays.asList(this.getName());
+        }
+        else {
+            query = "UPDATE " + tblName + " set 'name' = ? WHERE id = ?";
+            params = Arrays.asList(this.getName(), this.getId());
+        }
+
+        this.db.runQuery(query, params);
+        this.newObject = false;
     }
 
     public int getId() {

@@ -19,10 +19,13 @@ package pl.martialdb.app.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.el.MethodNotFoundException;
+
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class Group extends GroupMetaData {
+public class Group extends GroupMetaData implements IModel {
     final MartialDatabase db;
 
     private Integer id, cityId;
@@ -56,6 +59,11 @@ public class Group extends GroupMetaData {
         } catch (SQLException e) {
             logger.error("Error when initializing group", e);
         }
+    }
+
+    // Stub
+    public void save() {
+        throw new MethodNotFoundException("Saving Groups is not yet available");
     }
 
     public int getId() {

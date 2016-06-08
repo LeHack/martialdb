@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseFilter;
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 
 public class UserCollection extends BaseCollection {
@@ -40,13 +41,12 @@ public class UserCollection extends BaseCollection {
         return f.check( "role", u.getRole());
     }
 
-    @SuppressWarnings("unchecked")
     public User findByPassword(String login, StringBuffer password) {
-        Iterator<User> iter = (Iterator<User>) getIterator();
+        Iterator<IModel> iter = getIterator();
 
         User result = null;
         while (iter.hasNext()) {
-            User u = iter.next();
+            User u = (User)iter.next();
             if (login.equals( u.getLogin() ) && u.comparePassword( password )) {
                 result = u;
                 break;

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.junit.Test;
 
 import pl.martialdb.app.common.BaseFilter;
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.model.User;
 import pl.martialdb.app.model.UserCollection;
 import pl.martialdb.app.rbac.RoleType;
@@ -26,7 +27,6 @@ public class UserCollectionTest extends Common {
         assertEquals( u.getRole(), RoleType.ADMIN );
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public final void testFilterByStatus() {
         UserCollection uc = new UserCollection(db);
@@ -34,15 +34,15 @@ public class UserCollectionTest extends Common {
         f.set("role", RoleType.ADMIN);
         uc.filter(f);
         assertEquals( 2, uc.getSize() );
-        Iterator<User> iter = (Iterator<User>) uc.getIterator();
-        assertEquals( iter.next().getName(), "John Wayne");
-        assertEquals( iter.next().getName(), "Clint Eastwood");
+        Iterator<IModel> iter = uc.getIterator();
+        assertEquals( ((User)iter.next()).getName(), "John Wayne");
+        assertEquals( ((User)iter.next()).getName(), "Clint Eastwood");
 
         uc = new UserCollection(db);
         f.set("role", RoleType.USER);
         uc.filter(f);
         assertEquals( 1, uc.getSize() );
-        iter = (Iterator<User>) uc.getIterator();
-        assertEquals( iter.next().getName(), "Gary Cooper");
+        iter = uc.getIterator();
+        assertEquals( ((User)iter.next()).getName(), "Gary Cooper");
 }
 }

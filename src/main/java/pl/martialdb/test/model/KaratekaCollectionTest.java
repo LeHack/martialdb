@@ -6,42 +6,42 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.model.Karateka;
 import pl.martialdb.app.model.KaratekaCollection;
 import pl.martialdb.app.model.KaratekaFilter;
 import pl.martialdb.app.test.Common;
 
-@SuppressWarnings("unchecked")
 public class KaratekaCollectionTest extends Common {
     @Test
     public final void testFilterDefaults() {
         KaratekaCollection kc = new KaratekaCollection(db);
         kc.filter();
         assertEquals( 3, kc.getSize() );
-        Iterator<Karateka> iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Jan Kowalski");
-        assertEquals( iter.next().getFullName(), "Marian Nowak");
-        assertEquals( iter.next().getFullName(), "Zdzisław Nowy");
+        Iterator<IModel> iter = kc.getIterator();
+        assertEquals( "Jan Kowalski",  ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Marian Nowak",  ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Zdzisław Nowy", ((Karateka)iter.next()).getFullName() );
 
         // first use defaults
         kc = new KaratekaCollection(db);
         KaratekaFilter f = new KaratekaFilter(); 
         kc.filter(f);
         assertEquals( 3, kc.getSize() );
-        iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Jan Kowalski");
-        assertEquals( iter.next().getFullName(), "Marian Nowak");
-        assertEquals( iter.next().getFullName(), "Zdzisław Nowy");
+        iter = kc.getIterator();
+        assertEquals( "Jan Kowalski",  ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Marian Nowak",  ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Zdzisław Nowy", ((Karateka)iter.next()).getFullName() );
 
         kc = new KaratekaCollection(db);
         f.set("status", null);
         kc.filter(f);
         assertEquals( 4, kc.getSize() );
-        iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Jan Kowalski");
-        assertEquals( iter.next().getFullName(), "Marian Nowak");
-        assertEquals( iter.next().getFullName(), "Walery Nietutejszy");
-        assertEquals( iter.next().getFullName(), "Zdzisław Nowy");
+        iter = kc.getIterator();
+        assertEquals( "Jan Kowalski",       ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Marian Nowak",       ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Walery Nietutejszy", ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Zdzisław Nowy",      ((Karateka)iter.next()).getFullName() );
     }
 
     @Test
@@ -51,8 +51,8 @@ public class KaratekaCollectionTest extends Common {
         f.set("status", false);
         kc.filter(f);
         assertEquals( 1, kc.getSize() );
-        Iterator<Karateka> iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Walery Nietutejszy");
+        Iterator<IModel> iter = kc.getIterator();
+        assertEquals( "Walery Nietutejszy", ((Karateka)iter.next()).getFullName() );
     }
 
     @Test
@@ -62,15 +62,15 @@ public class KaratekaCollectionTest extends Common {
         f.set("groupId", 1);
         kc.filter(f);
         assertEquals( 1, kc.getSize() );
-        Iterator<Karateka> iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Zdzisław Nowy");
+        Iterator<IModel> iter = kc.getIterator();
+        assertEquals( "Zdzisław Nowy", ((Karateka)iter.next()).getFullName() );
 
         kc = new KaratekaCollection(db);
         f.set("groupId", 2);
         kc.filter(f);
         assertEquals( 1, kc.getSize() );
-        iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Marian Nowak");
+        iter = kc.getIterator();
+        assertEquals( "Marian Nowak", ((Karateka)iter.next()).getFullName() );
     }
 
     @Test
@@ -81,8 +81,8 @@ public class KaratekaCollectionTest extends Common {
         f.set("status", null);
         kc.filter(f);
         assertEquals( 2, kc.getSize() );
-        Iterator<Karateka> iter = (Iterator<Karateka>) kc.getIterator();
-        assertEquals( iter.next().getFullName(), "Marian Nowak");
-        assertEquals( iter.next().getFullName(), "Walery Nietutejszy");
+        Iterator<IModel> iter = kc.getIterator();
+        assertEquals( "Marian Nowak",       ((Karateka)iter.next()).getFullName() );
+        assertEquals( "Walery Nietutejszy", ((Karateka)iter.next()).getFullName() );
     }
 }

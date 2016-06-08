@@ -28,13 +28,16 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.el.MethodNotFoundException;
+
 import org.mindrot.jbcrypt.BCrypt;
 
+import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.rbac.RoleType;
 
-public class User extends UserMetaData {
+public class User extends UserMetaData implements IModel {
     final MartialDatabase db;
 
     private Integer id, defaultCity;
@@ -77,6 +80,11 @@ public class User extends UserMetaData {
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing user", e);
         }
+    }
+
+    // Stub
+    public void save() {
+        throw new MethodNotFoundException("Saving Users is not yet available");
     }
 
     public int getId() {
