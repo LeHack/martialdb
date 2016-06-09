@@ -46,4 +46,22 @@ public class CityTest extends Common {
         City c2 = new City(2, db);
         assertEquals(c2.getName(), "Kraków");
     }
+
+    @Test
+    public final void testSave() throws ObjectNotFoundException {
+        // add new city
+        City c = new City(db).set("name", "Wąchock");
+        assertEquals(c.getName(), "Wąchock");
+        c.save();
+        assertEquals(c.getId(), 3);
+
+        // load and update
+        City c2 = new City(3, db);
+        assertEquals(c2.getName(), "Wąchock");
+        c2.set("name", "New York");
+        c2.save();
+
+        City c3 = new City(3, db);
+        assertEquals(c3.getName(), "New York");
+}
 }

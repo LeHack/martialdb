@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -18,6 +19,10 @@ public abstract class BaseCollection {
 
     public BaseCollection(IModel singleObject) {
         data.add( singleObject );
+    }
+
+    public BaseCollection(List<IModel> objects) {
+        data.addAll( objects );
     }
 
     public BaseCollection(MartialDatabase db, BaseMetaData meta) {

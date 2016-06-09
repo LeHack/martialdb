@@ -19,7 +19,9 @@ package pl.martialdb.app.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pl.martialdb.app.common.IModel;
 import pl.martialdb.app.db.MartialDatabase;
@@ -29,8 +31,7 @@ public class City extends CityMetaData implements IModel {
     final MartialDatabase db;
 
     private boolean newObject = true;
-    private Integer id;
-    private String name;
+    private Map<String, Object> data = new HashMap<>();
 
     public City(MartialDatabase...db){
         this.db = (db.length > 0 ? db[0] : new MartialDatabase());
@@ -53,10 +54,20 @@ public class City extends CityMetaData implements IModel {
         init( row );
     }
 
+    public City set(String param, Object value) {
+        data.put(param, value);
+        return this;
+    }
+
+    public Object get(String param) {
+        return data.get(param);
+    }
+
     public void init(ResultSet data) {
         try {
-            this.id          = data.getInt("id");
-            this.name        = data.getString("name");
+            this
+                .set("id",   data.getInt("id"))
+                .set("name", data.getString("name"));
         } catch (SQLException e) {
             logger.error("Error when initializing city", e);
         }
@@ -69,22 +80,31 @@ public class City extends CityMetaData implements IModel {
 
         if (this.newObject) {
             query = "INSERT INTO " + tblName + " ('name') VALUES (?)";
-            params = Arrays.asList(this.getName());
+            params = Arrays.asList(get("name"));
         }
         else {
             query = "UPDATE " + tblName + " set 'name' = ? WHERE id = ?";
-            params = Arrays.asList(this.getName(), this.getId());
+            params = Arrays.asList(get("name"), get("id"));
         }
 
-        this.db.runQuery(query, params);
-        this.newObject = false;
+        ResultSet rs = db.runUpdate(query, params);
+        try {
+            if (!rs.isClosed()) {
+                rs.next();
+                // update the id
+                set("id", rs.getInt(1));
+                this.newObject = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getId() {
-        return this.id;
+        return (int)this.get("id");
     }
 
     public String getName() {
-        return this.name;
+        return (String)this.get("name");
     }
 }

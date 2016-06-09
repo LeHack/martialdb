@@ -114,15 +114,15 @@ public class MartialDatabase {
         return (ResultSet)_runQuery(query, params, executor);
     }
 
-    public int runUpdate(String query){
-        return runUpdate(query, Arrays.asList());
+    public ResultSet runUpdate(String query){
+        return (ResultSet)runUpdate(query, Arrays.asList());
     }
-    public int runUpdate(String query, Object single){
-        return runUpdate(query, Arrays.asList(single));
+    public ResultSet runUpdate(String query, Object single){
+        return (ResultSet)runUpdate(query, Arrays.asList(single));
     }
-    public int runUpdate(String query, List<Object> params){
-        CheckedFunction<PreparedStatement, Object> executor = stm -> stm.executeUpdate();
-        return (Integer)_runQuery(query, params, executor);
+    public ResultSet runUpdate(String query, List<Object> params){
+        CheckedFunction<PreparedStatement, Object> executor = stm -> { stm.executeUpdate(); return stm.getGeneratedKeys(); };
+        return (ResultSet)_runQuery(query, params, executor);
     }
 
     @FunctionalInterface
