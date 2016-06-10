@@ -70,7 +70,11 @@ public class RestMenu {
                         .add("name", "Wydarzenia")
                         .add("url", "events")
                         .build());
-
+                subMenuItems.add(Json.createObjectBuilder()
+                        .add("name", "Obecnosci")
+                        .add("url", "presence")
+                        .build());
+                
                 menuItems.add(Json.createObjectBuilder()
                           .add("name", "Szkoła")
                           .add("cssClass", "active")

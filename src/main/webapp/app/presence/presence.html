@@ -1,0 +1,63 @@
+<div ui-view class="ui-widget" ng-controller="PresenceController as vm">
+    <div>
+        <h3>{{title}}</h3>
+    </div>
+    <div>
+        <button class="btn btn-default btn-primary" ng-click="addRow()" tooltip="Add">
+            <span class="glyphicon glyphicon-plus"></span> Add
+        </button>
+        
+        <div  data-ng-init="loadGridData()"
+            id="martialGrid" 
+            class="martialGrid"
+            ui-grid="vm.martialGrid"
+            ui-grid-move-columns 
+            ui-grid-selection
+            ui-grid-resize-columns
+            ui-grid-pinning
+            ui-grid-exporter
+            ui-grid-auto-resize
+            ui-grid-edit
+        ></div>
+
+        <br/>
+        
+        <script type="text/ng-template" id="row-buttons.html">
+            <div class="ui-grid-cell-contents">
+                <button type="button" class="btn btn-primary" ng-click="grid.appScope.vm.editRow(grid, row)" tooltip="Edit">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="grid.appScope.vm.removeRow(grid, row)" tooltip="Remove">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="edit-modal.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Edycja: {{title}}</h3>
+            </div>
+            <div class="modal-body">
+                <form sf-schema="vm.schema" sf-form="vm.form" sf-model="vm.entity"></form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="vm.save()">Save</button>
+                <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
+            </div>
+        </script>
+        
+        <script type="text/ng-template" id="remove-modal.html">
+            <div class="modal-header">
+                <h3 class="modal-title">Warning</h3>
+            </div>
+            <div class="modal-body">
+                Do you really want to remove?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="vm.remove()">Remove</button>
+                <button class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
+            </div>
+        </script>
+        
+    </div>
+</div>

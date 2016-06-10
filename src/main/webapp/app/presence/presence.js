@@ -1,7 +1,7 @@
-var app = angular.module('app').controller("UsersController", function ($scope, $http, $modal, feedback) {
+var app = angular.module('app').controller("PresenceController", function ($scope, $http, $modal, feedback) {
     var vm = this;
 
-    $scope.title = "Użytkownicy";
+    $scope.title = "Obecności";
 
     feedback.clearAll();
 
@@ -26,8 +26,8 @@ var app = angular.module('app').controller("UsersController", function ($scope, 
         rowTemplate : "<div ng-dblclick=\"grid.appScope.vm.editRow(grid, row)\" ng-repeat=\"(colRenderIndex, col) in colContainer.renderedColumns track by col.colDef.name\" class=\"ui-grid-cell\" ng-class=\"{ 'ui-grid-row-header-cell': col.isRowHeader }\" ui-grid-cell></div>"
     };
 
-    loadUsers = function () {
-        $http.get('rs/users').success(function (data) {
+    loadPresence = function () {
+        $http.get('rs/presence').success(function (data) {
             vm.martialGrid.columnDefs = [];
             for(var i = 0; i < data.fields.length; i++) {
 
@@ -55,7 +55,7 @@ var app = angular.module('app').controller("UsersController", function ($scope, 
         });
     };
 
-    $scope.loadGridData = loadUsers;
+    $scope.loadGridData = loadPresence;
 
     // remove row
     remove = function (row) {

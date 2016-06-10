@@ -9,6 +9,7 @@ angular.module('app', ['ui.bootstrap', 'ngRoute', 'AuthService', 'xeditable', 'u
                               .when('/events', { templateUrl: 'app/events/events.html'})
                               .when('/groups', { templateUrl: 'app/groups/groups.html'})
                               .when('/users', { templateUrl: 'app/users/users.html' })
+                              .when('/presence', { templateUrl: 'app/presence/presence.html' })
                               .otherwise({ redirectTo: '/' });
             }])
         .run(['$rootScope', '$http', '$location', 'feedback', '$window', function ($rootScope, $http, $location, feedback, $window) {
