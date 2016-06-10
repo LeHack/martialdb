@@ -1,26 +1,16 @@
-angular.module('app', ['ui.bootstrap', 'ngRoute', 'AuthService', 'xeditable'])
+angular.module('app', ['ui.bootstrap', 'ngRoute', 'AuthService', 'xeditable', 'ui.grid', 'ui.grid.moveColumns', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.edit', 'schemaForm'])
         .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
                 $httpProvider.responseInterceptors.push('httpInterceptor');
             
-                $routeProvider.when('/login', {
-                    templateUrl: 'app/login/login.html',
-                    controller: ''
-                }).when('/logout', {
-                    templateUrl: 'app/logout/logout.html',
-                    controller: 'LogoutController'
-                }).when('/users', {
-                    templateUrl: 'app/users/users.html',
-                    controller: ''
-                }).when('/admins', {
-                    templateUrl: 'app/admins/admins.html',
-                    controller: ''
-                }).when('/data', {
-                    templateUrl: 'app/data/data.html',
-                    controller: 'DataController'
-
-                }).otherwise({
-                    redirectTo: '/'
-                });
+                $routeProvider.when('/login', { templateUrl: 'app/login/login.html'})
+                              .when('/logout', { templateUrl: 'app/logout/logout.html'})
+                              .when('/fighters', {templateUrl: 'app/fighters/fighters.html'})
+                              .when('/cities', { templateUrl: 'app/cities/cities.html'})
+                              .when('/events', { templateUrl: 'app/events/events.html'})
+                              .when('/groups', { templateUrl: 'app/groups/groups.html'})
+                              .when('/users', { templateUrl: 'app/users/users.html' })
+                              .when('/presence', { templateUrl: 'app/presence/presence.html' })
+                              .otherwise({ redirectTo: '/' });
             }])
         .run(['$rootScope', '$http', '$location', 'feedback', '$window', function ($rootScope, $http, $location, feedback, $window) {
                 $http.get("rs/appinfo").success(function (data) {
@@ -58,6 +48,7 @@ angular.module('app', ['ui.bootstrap', 'ngRoute', 'AuthService', 'xeditable'])
                     //load menu
                     $http.get("rs/menu").success(function (data) {
                         $rootScope.$links = data;
+
                     })
                 };
                 

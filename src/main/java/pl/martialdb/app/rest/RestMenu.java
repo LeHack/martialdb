@@ -55,31 +55,39 @@ public class RestMenu {
             
             if ( webSession.hasRole(httpRequest, RoleType.USER) ){
                 subMenuItems.add(Json.createObjectBuilder()
-                        .add("name", "Example data")
-                        .add("url", "data")
+                        .add("name", "Karatecy")
+                        .add("url", "fighters")
                         .build());
                 subMenuItems.add(Json.createObjectBuilder()
-                        .add("name", "Users")
-                        .add("url", "users")
+                        .add("name", "Grupy")
+                        .add("url", "groups")
                         .build());
                 subMenuItems.add(Json.createObjectBuilder()
-                        .add("name", "Inny")
-                        .add("url", "inny")
+                        .add("name", "Miasta")
+                        .add("url", "cities")
                         .build());
-
+                subMenuItems.add(Json.createObjectBuilder()
+                        .add("name", "Wydarzenia")
+                        .add("url", "events")
+                        .build());
+                subMenuItems.add(Json.createObjectBuilder()
+                        .add("name", "Obecnosci")
+                        .add("url", "presence")
+                        .build());
+                
                 menuItems.add(Json.createObjectBuilder()
-                          .add("name", "Users")
+                          .add("name", "Szkoła")
                           .add("cssClass", "active")
                           .add("sub", subMenuItems).build()
                 );
             }
             if ( webSession.hasRole(httpRequest, RoleType.ADMIN) ){
                 subMenuItems.add(Json.createObjectBuilder()
-                        .add("name", "Admins")
-                        .add("url", "admins")
+                        .add("name", "Użytkownicy")
+                        .add("url", "users")
                         .build());
                 menuItems.add(Json.createObjectBuilder()
-                          .add("name", "Admins")
+                          .add("name", "Administracja")
                           .add("cssClass", "active")
                           .add("sub", subMenuItems).build()
                 );
