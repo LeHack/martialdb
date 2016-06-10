@@ -23,30 +23,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.el.MethodNotFoundException;
-
-import pl.martialdb.app.common.IModel;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class Karateka extends KaratekaMetaData implements IModel {
-    final MartialDatabase db;
-
-    private Integer id, groupId;
-    private String name, surname, email, telephone, address, city;
-    private Rank rank;
-    private Date signupDate, birthdate;
-    private boolean status;
-
+public class Karateka extends BaseModel {
     public Karateka(MartialDatabase...db){
-        this.db = (db.length > 0 ? db[0] : new MartialDatabase());
+        super(db);
+        this.meta = new KaratekaMetaData();
     }
 
     public Karateka(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
+        this.newObject = false;
         logger.debug("Creating Karateka instance for id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
+            "SELECT " + meta.getSQLfieldsStr() + " from " + meta.getTblName() + " where id = ?", id
         );
         try {
             if (row.isClosed())
@@ -61,74 +53,92 @@ public class Karateka extends KaratekaMetaData implements IModel {
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     public void init(ResultSet data) {
         try {
-            this.id          = data.getInt("id");
-            this.groupId     = data.getInt("group_id"); // TODO: replace with object?
-            this.name        = data.getString("name");
-            this.surname     = data.getString("surname");
-            this.telephone   = data.getString("telephone");
-            this.email       = data.getString("email");
-            this.address     = data.getString("address");
-            this.city        = data.getString("city");
-            this.signupDate  = dateFormat.parse( data.getString("signup") );
-            this.birthdate   = dateFormat.parse( data.getString("birthdate") );
-            // data.getBoolean() doesn't work correctly with SQLite
-            this.status      = "true".equals( data.getString("status") );
-            this.rank        = new Rank( data.getString("rank_type"), data.getInt("rank_level") );
+            this
+                .set("id",          data.getInt("id"))
+                .set("groupId",     data.getInt("group_id"))
+                .set("name",        data.getString("name"))
+                .set("surname",     data.getString("surname"))
+                .set("telephone",   data.getString("telephone"))
+                .set("email",       data.getString("email"))
+                .set("address",     data.getString("address"))
+                .set("city",        data.getString("city"))
+                .set("signupDate",  dateFormat.parse( data.getString("signup") ))
+                .set("birthdate",   dateFormat.parse( data.getString("birthdate") ))
+                // data.getBoolean() doesn't work correctly with SQLite
+                .set("status",      "true".equals( data.getString("status") ))
+                .set("rank",        new Rank( data.getString("rank_type"), data.getInt("rank_level") ));
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing karateka", e);
         }
     }
 
-    // Stub
-    public void save() {
-        throw new MethodNotFoundException("Saving Karateka is not yet available");
+    public Karateka set(String param, Object value) {
+        return (Karateka)super.set(param, value);
+    }
+    public Karateka save() {
+        return (Karateka)super.save();
+    }
+    protected Object getMappedVal(String param) {
+        Object out = null;
+        switch (param) {
+            case "rank_type":
+                out = getRank().type.toString();
+                break;
+            case "rank_level":
+                out = getRank().level;
+                break;
+            default:
+                out = super.getMappedVal(param);
+                break;
+        };
+        return out;
     }
 
     public int getId() {
-        return this.id;
+        return (int)get("id");
     }
 
     public int getGroupId() {
-        return this.groupId;
+        return (int)get("groupId");
     }
 
     public String getName() {
-        return this.name;
+        return (String)get("name");
     }
 
     public String getFullName() {
-        return this.name + " " + this.surname;
+        return (String)get("name") + " " + (String)get("surname");
     }
 
     public String getEmail() {
-        return this.email;
+        return (String)get("email");
     }
 
     public String getTelephone() {
-        return this.telephone;
+        return (String)get("telephone");
     }
 
     public String getAddress() {
-        return this.address;
+        return (String)get("address");
     }
 
     public String getCity() {
-        return this.city;
+        return (String)get("city");
     }
 
     public Rank getRank() {
-        return this.rank;
+        return (Rank)get("rank");
     }
 
     public boolean getStatus() {
-        return this.status;
+        return (boolean)get("status");
     }
 
     public Date getSignupDate() {
-        return this.signupDate;
+        return (Date)get("signupDate");
     }
 
     public Date getBirthdate() {
-        return this.birthdate;
+        return (Date)get("birthdate");
     }
 }

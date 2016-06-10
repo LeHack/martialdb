@@ -28,32 +28,25 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.el.MethodNotFoundException;
-
 import org.mindrot.jbcrypt.BCrypt;
 
-import pl.martialdb.app.common.IModel;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.rbac.RoleType;
 
-public class User extends UserMetaData implements IModel {
-    final MartialDatabase db;
-
-    private Integer id, defaultCity;
-    private String login, pass, name, surname, email;
-    private Date stamp;
-    private RoleType role;
-
+public class User extends BaseModel {
     public User(MartialDatabase...db){
-        this.db = (db.length > 0 ? db[0] : new MartialDatabase());
+        super(db);
+        this.meta = new UserMetaData();
     }
 
     public User(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
+        this.newObject = false;
         logger.debug("Creating User instance for user id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
+            "SELECT " + meta.getSQLfieldsStr() + " from " + meta.getTblName() + " where id = ?", id
         );
         try {
             if (row.isClosed())
@@ -65,62 +58,77 @@ public class User extends UserMetaData implements IModel {
         init( row );
     }
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final DateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public void init(ResultSet data) {
         try {
-            this.id          = data.getInt("id");
-            this.login       = data.getString("login");
-            this.pass        = data.getString("pass");
-            this.name        = data.getString("name");
-            this.surname     = data.getString("surname");
-            this.email       = data.getString("email");
-            this.role        = RoleType.valueOf( data.getString("role") );
-            this.defaultCity = data.getInt("default_city_id");
-            this.stamp       = dateFormat.parse( data.getString("stamp") );
+            this
+                .set("id",            data.getInt("id"))
+                .set("login",         data.getString("login"))
+                .set("pass",          data.getString("pass"))
+                .set("name",          data.getString("name"))
+                .set("surname",       data.getString("surname"))
+                .set("email",         data.getString("email"))
+                .set("defaultCityId", data.getInt("default_city_id"))
+                .set("role",          RoleType.valueOf( data.getString("role") ))
+                .set("stamp",         dateTimeFormat.parse( data.getString("stamp") ));
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing user", e);
         }
     }
 
-    // Stub
-    public void save() {
-        throw new MethodNotFoundException("Saving Users is not yet available");
+    public User set(String param, Object value) {
+        return (User)super.set(param, value);
+    }
+    public User save() {
+        return (User)super.save();
+    }
+    protected Object getMappedVal(String param) {
+        Object out = null;
+        switch (param) {
+            case "pass":
+                out = BCrypt.hashpw((String)get("pass"), BCrypt.gensalt());
+                break;
+            default:
+                out = super.getMappedVal(param);
+                break;
+        };
+        return out;
     }
 
     public int getId() {
-        return this.id;
+        return (int)get("id");
     }
 
     public String getName() {
-        return this.name + " " + this.surname;
+        return (String)get("name") + " " + (String)get("surname");
     }
 
     public String getEmail() {
-        return this.email;
+        return (String)get("email");
     }
 
     public int getDefaultCity() {
-        return this.defaultCity;
+        return (int)get("defaultCityId");
     }
 
     public RoleType getRole() {
-        return this.role;
+        return (RoleType)get("role");
     }
 
     public String getLogin() {
-        return this.login;
+        return (String)get("login");
     }
 
     public Boolean comparePassword(StringBuffer password) {
-        return BCrypt.checkpw(password.toString(), this.pass);
+        return BCrypt.checkpw(password.toString(), (String)get("pass"));
     }
 
     public Date getLastLogin() {
-        return this.stamp;
+        return (Date)get("stamp");
     }
 
     public void updateLoginStamp() {
-        String now = dateFormat.format(new Date());
-        this.db.runUpdate("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, this.id));
+        String now = dateTimeFormat.format(new Date());
+        this.db.runUpdate("UPDATE user set stamp = ? where id = ?", Arrays.asList(now, getId()));
     }
 }

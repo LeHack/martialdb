@@ -2,7 +2,7 @@ package pl.martialdb.app.model;
 
 import java.sql.Types;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import pl.martialdb.app.common.BaseMetaData;
 
@@ -13,20 +13,21 @@ public class KaratekaMetaData extends BaseMetaData {
             "karateka",
             Arrays.asList(
                 "id", "group_id", "name", "surname", "email", "telephone", "address", "city",
-                "rank_type", "rank_level", "signup", "birthdate", "status"
+                "signup", "birthdate", "status", "rank_type", "rank_level"
             ),
-            new HashMap<String, Integer>(){{
+            new LinkedHashMap<String, Integer>(){{
                 put("id",           Types.INTEGER);
                 put("groupId",      Types.INTEGER);
                 put("name",         Types.VARCHAR);
+                put("surname",      Types.VARCHAR);
                 put("email",        Types.VARCHAR);
                 put("telephone",    Types.VARCHAR);
                 put("address",      Types.VARCHAR);
                 put("city",         Types.VARCHAR);
-                put("rank",         Types.STRUCT );
-                put("signup",       Types.DATE   );
+                put("signupDate",   Types.DATE   );
                 put("birthdate",    Types.DATE   );
                 put("status",       Types.BOOLEAN);
+                put("rank",         Types.STRUCT );
             }}
         );
     }

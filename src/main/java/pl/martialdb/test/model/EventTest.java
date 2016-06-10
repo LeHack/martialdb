@@ -80,7 +80,6 @@ public class EventTest extends Common {
 
     @Test
     public final void testSaveAndDelete() throws ObjectNotFoundException {
-        // add new city
         Event e = new Event(db)
             .set("name", "Wydarzenie")
             .set("cityId", 2)

@@ -49,7 +49,6 @@ public class CityTest extends Common {
 
     @Test
     public final void testSaveAndDelete() throws ObjectNotFoundException {
-        // add new city
         City c = new City(db).set("name", "Wąchock");
         assertEquals(c.getName(), "Wąchock");
         c.save();

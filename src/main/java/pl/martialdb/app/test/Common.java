@@ -44,8 +44,6 @@ public class Common {
     }
 
     public Date asDate(String dateStr) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
         Date date = null;
         try {
             date = dateFormat.parse(dateStr);

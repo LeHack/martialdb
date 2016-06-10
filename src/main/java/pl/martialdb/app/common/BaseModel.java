@@ -30,18 +30,19 @@ public abstract class BaseModel {
     public abstract void init(ResultSet data);
 
     /* Add or update object in the db */
-    public void save() {
+    public BaseModel save() {
         List<Object> params = new ArrayList<>();
         List<String> tokens = new ArrayList<>(), sqlFields = new ArrayList<>();
 
         String query = "";
         for (String field : meta.getSQLfields()) {
             if ("id".equals(field)) { continue; }
-            sqlFields.add( field );
             Object v = getMappedVal( field );
             if (v instanceof Date) {
                 v = dateFormat.format(v);
             }
+            if (v == null) { continue; }
+            sqlFields.add( field );
             params.add( v );
             tokens.add("?");
         }
@@ -65,7 +66,7 @@ public abstract class BaseModel {
 
         ResultSet rs = db.runUpdate(query, params);
         try {
-            if (!rs.isClosed()) {
+            if (this.newObject && !rs.isClosed()) {
                 rs.next();
                 // update the id
                 set("id", rs.getInt(1));
@@ -74,6 +75,8 @@ public abstract class BaseModel {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return this;
     }
 
     public void delete() {

@@ -19,27 +19,22 @@ package pl.martialdb.app.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.el.MethodNotFoundException;
-
-import pl.martialdb.app.common.IModel;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class Group extends GroupMetaData implements IModel {
-    final MartialDatabase db;
-
-    private Integer id, cityId;
-    private String name;
-
+public class Group extends BaseModel {
     public Group(MartialDatabase...db){
-        this.db = (db.length > 0 ? db[0] : new MartialDatabase());
+        super(db);
+        this.meta = new GroupMetaData();
     }
 
     public Group(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
+        this.newObject = false;
         logger.debug("Creating Group instance for id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
+            "SELECT " + meta.getSQLfieldsStr() + " from " + meta.getTblName() + " where id = ?", id
         );
         try {
             if (row.isClosed())
@@ -53,28 +48,31 @@ public class Group extends GroupMetaData implements IModel {
 
     public void init(ResultSet data) {
         try {
-            this.id          = data.getInt("id");
-            this.cityId      = data.getInt("city_id"); // TODO: replace with object?
-            this.name        = data.getString("name");
+            this
+                .set("id",      data.getInt("id"))
+                .set("cityId",  data.getInt("city_id"))
+                .set("name",    data.getString("name"));
         } catch (SQLException e) {
             logger.error("Error when initializing group", e);
         }
     }
 
-    // Stub
-    public void save() {
-        throw new MethodNotFoundException("Saving Groups is not yet available");
+    public Group set(String param, Object value) {
+        return (Group)super.set(param, value);
+    }
+    public Group save() {
+        return (Group)super.save();
     }
 
     public int getId() {
-        return this.id;
+        return (int)get("id");
     }
 
     public int getCityId() {
-        return this.cityId;
+        return (int)get("cityId");
     }
 
     public String getName() {
-        return this.name;
+        return (String)get("name");
     }
 }

@@ -59,4 +59,33 @@ public class GroupTest extends Common {
         assertEquals(g2.getName(), "7 - 5 kyu");
     }
 
+    @Test
+    public final void testSaveAndDelete() throws ObjectNotFoundException {
+        Group g = new Group(db)
+            .set("name", "Grupa PRO")
+            .set("cityId", 1);
+
+        assertEquals(g.getName(), "Grupa PRO");
+        g.save();
+        int gId = g.getId();
+        assertEquals(4, gId);
+
+        // load and update
+        Group g2 = new Group(gId, db);
+        assertEquals("Grupa PRO", g2.getName());
+        assertEquals(1, g2.getCityId());
+        g2.set("name", "Grupa PRO PRO");
+        g2.set("cityId", 2);
+        g2.save();
+
+        Group g3 = new Group(gId, db);
+        assertEquals("Grupa PRO PRO", g3.getName());
+        assertEquals(2, g3.getCityId());
+
+        g2.delete();
+
+        Throwable except = checkIfDeleted( db -> new Group(gId, db) );
+        assertEquals(ObjectNotFoundException.class,     except.getClass());
+        assertEquals("No Group found for id: " + gId,  except.getMessage());
+    }
 }

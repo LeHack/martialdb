@@ -2,10 +2,11 @@ package pl.martialdb.app.model;
 
 import java.sql.ResultSet;
 import java.util.Iterator;
+import java.util.List;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseFilter;
-import pl.martialdb.app.common.IModel;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 
 public class UserCollection extends BaseCollection {
@@ -21,6 +22,10 @@ public class UserCollection extends BaseCollection {
     // Single object collection
     public UserCollection(User u) {
         super(u);
+    }
+    // Collection of existing objects
+    public UserCollection(List<BaseModel> ulist) {
+        super(ulist);
     }
 
     @Override
@@ -42,7 +47,7 @@ public class UserCollection extends BaseCollection {
     }
 
     public User findByPassword(String login, StringBuffer password) {
-        Iterator<IModel> iter = getIterator();
+        Iterator<BaseModel> iter = getIterator();
 
         User result = null;
         while (iter.hasNext()) {

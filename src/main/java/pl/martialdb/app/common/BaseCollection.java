@@ -74,6 +74,7 @@ public abstract class BaseCollection {
     }
 
     public void delete() {
+        System.out.println( this.data.size() );
         Iterator<BaseModel> iter = getIterator();
         while (iter.hasNext())
             iter.next().delete();

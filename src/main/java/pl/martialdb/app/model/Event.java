@@ -64,6 +64,9 @@ public class Event extends BaseModel {
     public Event set(String param, Object value) {
         return (Event)super.set(param, value);
     }
+    public Event save() {
+        return (Event)super.save();
+    }
 
     public int getId() {
         return (int)this.get("id");

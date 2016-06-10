@@ -59,6 +59,9 @@ public class City extends BaseModel {
     public City set(String param, Object value) {
         return (City)super.set(param, value);
     }
+    public City save() {
+        return (City)super.save();
+    }
 
     public int getId() {
         return (int)this.get("id");

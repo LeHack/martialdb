@@ -5,8 +5,11 @@ public class Rank {
     public RankType type;
     public int level;
 
-    public Rank(String type, int level) {
-        this.type = RankType.valueOf( type );
+    public Rank(RankType type, int level) {
+        this.type = type;
         this.level = level;
+    }
+    public Rank(String type, int level) {
+        this(RankType.valueOf( type ), level);
     }
 };
