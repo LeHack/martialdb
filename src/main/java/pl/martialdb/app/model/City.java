@@ -59,7 +59,7 @@ public class City extends CityMetaData implements IModel {
         return this;
     }
 
-    public Object get(String param) {
+    private Object get(String param) {
         return data.get(param);
     }
 

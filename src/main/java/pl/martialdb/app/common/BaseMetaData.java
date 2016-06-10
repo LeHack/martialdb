@@ -6,7 +6,7 @@ import java.util.Set;
 
 import jersey.repackaged.com.google.common.base.Joiner;
 
-public class BaseMetaData {
+public abstract class BaseMetaData {
     protected static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger("appLog");
 
     protected final String tblName, sqlFieldsStr, defaultSortField;

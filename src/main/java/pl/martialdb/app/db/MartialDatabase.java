@@ -23,11 +23,6 @@
  */
 package pl.martialdb.app.db;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -60,36 +55,6 @@ public class MartialDatabase {
             appLog.error("Error preparing DB connection", e);
         }
         return conn;
-    }
-    public String getJsonString(String query){
-        StringWriter stringWriter = new StringWriter();
-
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(new ResultSetSerializer());
-
-        SimpleModule module2 = new SimpleModule();
-        module2.addSerializer(new ResultSetMetaDataSerializer());
-        
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(module);
-        objectMapper.registerModule(module2);
-
-        try {
-            Statement stm = dbConnection.createStatement();
-            ResultSet rs = stm.executeQuery(query);
-
-            ObjectNode objectNode = objectMapper.createObjectNode();
-            objectNode.putPOJO("fields", rs.getMetaData());
-            objectNode.putPOJO("records", rs);
-            objectMapper.writeValue(stringWriter, objectNode);
-        } catch (IOException | SQLException e) {
-            appLog.error("Error executing query", e);
-        }
-        return stringWriter.toString();
-    }
-    
-    public String getExampleDataJsonString(){
-        return getJsonString("SELECT * FROM t;");
     }
 
     public ResultSet runSimpleQuery(String query){
