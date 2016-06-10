@@ -77,4 +77,37 @@ public class EventTest extends Common {
         Event e3 = new Event(3, db);
         assertEquals(e3.getType(), EventType.SHOW);
     }
+
+    @Test
+    public final void testSaveAndDelete() throws ObjectNotFoundException {
+        // add new city
+        Event e = new Event(db)
+            .set("name", "Wydarzenie")
+            .set("cityId", 2)
+            .set("date", asDate("2016-11-24"))
+            .set("type", EventType.EXAM);
+        
+        assertEquals(e.getName(), "Wydarzenie");
+        e.save();
+        int evId = e.getId();
+        assertEquals(evId, 4);
+
+        // load and update
+        Event e2 = new Event(evId, db);
+        assertEquals("Wydarzenie",   e2.getName());
+        assertEquals(EventType.EXAM, e2.getType());
+        e2.set("name", "Inne wydarzenie");
+        e2.set("type", EventType.CAMP);
+        e2.save();
+
+        Event e3 = new Event(evId, db);
+        assertEquals(e3.getName(), "Inne wydarzenie");
+        assertEquals(e3.getType(), EventType.CAMP);
+
+        e2.delete();
+
+        Throwable except = checkIfDeleted( db -> new Event(evId, db) );
+        assertEquals(ObjectNotFoundException.class,     except.getClass());
+        assertEquals("No Event found for id: " + evId,  except.getMessage());
+    }
 }

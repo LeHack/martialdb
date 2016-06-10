@@ -18,34 +18,25 @@ package pl.martialdb.app.model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.el.MethodNotFoundException;
-
-import pl.martialdb.app.common.IModel;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
 
-public class Event extends EventMetaData implements IModel {
-    final MartialDatabase db;
-
-    private Integer id, cityId;
-    private Date date;
-    private String name;
-    private EventType type;
-
+public class Event extends BaseModel {
     public Event(MartialDatabase...db){
-        this.db = (db.length > 0 ? db[0] : new MartialDatabase());
+        super(db);
+        this.meta = new EventMetaData();
     }
 
     public Event(int id, MartialDatabase...db) throws ObjectNotFoundException {
         this(db);
+        this.newObject = false;
         logger.debug("Creating Event instance for id: " + id);
         ResultSet row = this.db.runQuery(
-            "SELECT " + sqlFieldsStr + " from " + tblName + " where id = ?", id
+            "SELECT " + meta.getSQLfieldsStr() + " from " + meta.getTblName() + " where id = ?", id
         );
         try {
             if (row.isClosed())
@@ -57,41 +48,40 @@ public class Event extends EventMetaData implements IModel {
         init( row );
     }
 
-    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     public void init(ResultSet data) {
         try {
-            this.id          = data.getInt("id");
-            this.cityId      = data.getInt("city_id");
-            this.name        = data.getString("name");
-            this.date        = dateFormat.parse( data.getString("date") );
-            this.type        = EventType.valueOf( data.getString("type") );
+            this
+                .set("id",      data.getInt("id"))
+                .set("cityId",  data.getInt("city_id"))
+                .set("name",    data.getString("name"))
+                .set("date",    dateFormat.parse( data.getString("date") ))
+                .set("type",    EventType.valueOf( data.getString("type") ));
         } catch (SQLException | ParseException e) {
             logger.error("Error when initializing group", e);
         }
     }
 
-    // Stub
-    public void save() {
-        throw new MethodNotFoundException("Saving Events is not yet available");
+    public Event set(String param, Object value) {
+        return (Event)super.set(param, value);
     }
 
     public int getId() {
-        return this.id;
+        return (int)this.get("id");
     }
 
     public int getCityId() {
-        return this.cityId;
+        return (int)this.get("cityId");
     }
 
     public String getName() {
-        return this.name;
+        return (String)this.get("name");
     }
 
     public Date getDate() {
-        return this.date;
+        return (Date)this.get("date");
     }
 
     public EventType getType() {
-        return this.type;
+        return (EventType)this.get("type");
     }
 }

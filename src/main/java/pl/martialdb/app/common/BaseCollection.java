@@ -14,40 +14,40 @@ import pl.martialdb.app.db.MartialDatabase;
 
 public abstract class BaseCollection {
     protected static final Logger appLog = Logger.getLogger("appLog");
-    private final Collection<IModel> data = new ArrayList<>();
+    private final Collection<BaseModel> data = new ArrayList<>();
     protected MartialDatabase db;
 
-    public BaseCollection(IModel singleObject) {
+    public BaseCollection(BaseModel singleObject) {
         data.add( singleObject );
     }
 
-    public BaseCollection(List<IModel> objects) {
+    public BaseCollection(List<BaseModel> objects) {
         data.addAll( objects );
     }
 
     public BaseCollection(MartialDatabase db, BaseMetaData meta) {
         this.db = db;
         try {
-            String query = "SELECT " + meta.sqlFieldsStr + " from " + meta.tblName;
-            if (meta.defaultSortField != null)
-                query += " order by " + meta.defaultSortField;
+            String query = "SELECT " + meta.getSQLfieldsStr() + " from " + meta.getTblName();
+            if (meta.getDefaultSortField() != null)
+                query += " order by " + meta.getDefaultSortField();
             ResultSet rows = db.runQuery(query);
             // if there is no data in the table, we'll just have an empty collection
             if (!rows.isClosed())
                 while (rows.next())
-                    data.add( (IModel)initObject(rows) );
+                    data.add( (BaseModel)initObject(rows) );
         } catch (SQLException e) {
             appLog.error("Error when initializing collection", e);
         }
     }
 
     public void filter(BaseFilter...filter) {
-        Collection<IModel> result = new ArrayList<>();
-        Iterator<IModel> iter = this.data.iterator();
+        Collection<BaseModel> result = new ArrayList<>();
+        Iterator<BaseModel> iter = this.data.iterator();
 
         BaseFilter f = (filter.length > 0 ? filter[0] : getDefaultFilter());
         while (iter.hasNext()) {
-            IModel obj = iter.next();
+            BaseModel obj = iter.next();
 
             if (!filter(f, obj))
                 continue;
@@ -59,7 +59,7 @@ public abstract class BaseCollection {
         this.data.addAll( result );
     }
 
-    public Iterator<IModel> getIterator() {
+    public Iterator<BaseModel> getIterator() {
         return this.data.iterator();
     }
 
@@ -68,9 +68,15 @@ public abstract class BaseCollection {
     }
 
     public void save() {
-        Iterator<IModel> iter = getIterator();
+        Iterator<BaseModel> iter = getIterator();
         while (iter.hasNext())
             iter.next().save();
+    }
+
+    public void delete() {
+        Iterator<BaseModel> iter = getIterator();
+        while (iter.hasNext())
+            iter.next().delete();
     }
 
     protected abstract Object initObject(ResultSet row);
