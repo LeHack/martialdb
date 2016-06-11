@@ -2,7 +2,7 @@ package pl.martialdb.app.model;
 
 import java.sql.Types;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import pl.martialdb.app.common.BaseMetaData;
 
@@ -12,7 +12,7 @@ public class CityMetaData extends BaseMetaData {
         super(
             "cities",
             Arrays.asList("id", "name"),
-            new HashMap<String, Integer>(){{
+            new LinkedHashMap<String, Integer>(){{
                 put("id",       Types.INTEGER);
                 put("name",     Types.VARCHAR);
             }}

@@ -25,10 +25,10 @@ public class CitySerializerTest extends Common {
             @SuppressWarnings("unchecked")
             Map<String, List<Map<String, Object>>> test = mapper.readValue(serialized, Map.class);
             assertEquals(test.keySet().size(), 2);
-            assertEquals(test.get("fields").get(0).get("name"), "name");
-            assertEquals(test.get("fields").get(0).get("type"), 12);
-            assertEquals(test.get("fields").get(1).get("name"), "id");
-            assertEquals(test.get("fields").get(1).get("type"), 4);
+            assertEquals(test.get("fields").get(0).get("name"), "id");
+            assertEquals(test.get("fields").get(0).get("type"), 4);
+            assertEquals(test.get("fields").get(1).get("name"), "name");
+            assertEquals(test.get("fields").get(1).get("type"), 12);
             assertEquals(test.get("records").size(), 2);
             assertEquals(test.get("records").get(0).get("name"), "Kołobrzeg");
             assertEquals(test.get("records").get(0).get("id"), 1);

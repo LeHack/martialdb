@@ -118,4 +118,39 @@ public class UserTest extends Common {
         assertNotEquals(newStamp.toString(), prevStamp.toString());
         assertTrue(newStamp.after(new Date(stamp)) && newStamp.before(new Date(stamp + 5000)));
     }
+
+    @Test
+    public final void testSaveAndDelete() throws ObjectNotFoundException {
+        User u = new User(db)
+            .set("login",   "doroask")
+            .set("pass",    "somePassword")
+            .set("name",    "Dorofei")
+            .set("surname", "Ask")
+            .set("email",   "dorofei@ask.com")
+            .set("role",    RoleType.ADMIN)
+            .set("defaultCityId", 1)
+            .save();
+
+        assertEquals(u.getName(), "Dorofei Ask");
+        int uId = u.getId();
+        assertEquals(4, uId);
+
+        // load and update
+        User u2 = new User(uId, db);
+        assertEquals("Dorofei Ask",  u2.getName());
+        assertEquals(1,              u2.getDefaultCity());
+        assertEquals(RoleType.ADMIN, u2.getRole());
+        assertTrue(u2.comparePassword(new StringBuffer("somePassword")));
+        u2.set("name", "Dorofeji").set("role", RoleType.USER).save();
+
+        User u3 = new User(uId, db);
+        assertEquals("Dorofeji Ask", u3.getName());
+        assertEquals(RoleType.USER,  u3.getRole());
+
+        u2.delete();
+
+        Throwable except = checkIfDeleted( db -> new User(uId, db) );
+        assertEquals(ObjectNotFoundException.class,     except.getClass());
+        assertEquals("No User found for id: " + uId,  except.getMessage());
+    }
 }

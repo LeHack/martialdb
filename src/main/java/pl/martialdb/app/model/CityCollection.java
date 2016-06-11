@@ -6,7 +6,7 @@ import java.util.List;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseFilter;
-import pl.martialdb.app.common.IModel;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 
 public class CityCollection extends BaseCollection {
@@ -23,8 +23,8 @@ public class CityCollection extends BaseCollection {
     public CityCollection(City c) {
         super(c);
     }
-    // Single object collection
-    public CityCollection(List<IModel> clist) {
+    // Collection of existing objects
+    public CityCollection(List<BaseModel> clist) {
         super(clist);
     }
 

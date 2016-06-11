@@ -27,8 +27,10 @@ public class KaratekaSerializerTest extends Common {
             @SuppressWarnings("unchecked")
             Map<String, List<Map<String, Object>>> test = mapper.readValue(serialized, Map.class);
             assertEquals(test.keySet().size(), 2);
-            assertEquals(test.get("fields").get(0).get("name"), "address");
-            assertEquals(test.get("fields").get(0).get("type"), 12);
+            assertEquals(test.get("fields").get(0).get("name"), "id");
+            assertEquals(test.get("fields").get(0).get("type"), 4);
+            assertEquals(test.get("fields").get(6).get("name"), "address");
+            assertEquals(test.get("fields").get(6).get("type"), 12);
             assertEquals(test.get("records").size(), 3);
             assertEquals(test.get("records").get(0).get("name"), "Jan Kowalski");
             assertEquals(test.get("records").get(0).get("id"), 1);

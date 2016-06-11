@@ -148,4 +148,44 @@ public class KaratekaTest extends Common {
         assertEquals(dateFormat.format( k3.getBirthdate() ), "1991-04-01");
     }
 
+    @Test
+    public final void testSaveAndDelete() throws ObjectNotFoundException {
+        Karateka k = new Karateka(db)
+            .set("groupId",     1)
+            .set("name",        "Dorofei")
+            .set("surname",     "Ask")
+            .set("city",        "Jarkowo")
+            .set("address",     "ul. Gdzieś przez coś")
+            .set("telephone",   "123456789")
+            .set("email",       "dorofei@ask.com")
+            .set("signupDate",  asDate("2010-08-15"))
+            .set("birthdate",   asDate("1989-04-19"))
+            .set("rank",        new Rank(RankType.KYU, 5))
+            .set("status",      true)
+            .save();
+
+        assertEquals(k.getFullName(), "Dorofei Ask");
+        int kId = k.getId();
+        assertEquals(5, kId);
+
+        // load and update
+        Karateka k2 = new Karateka(kId, db);
+        assertEquals("Dorofei Ask", k2.getFullName());
+        assertEquals("Jarkowo",     k2.getCity());
+        assertEquals("123456789",   k2.getTelephone());
+        assertEquals(asDate("2010-08-15"), k2.getSignupDate());
+        k2.set("name", "Dorofeji");
+        k2.set("city", "Jarosławowo");
+        k2.save();
+
+        Karateka k3 = new Karateka(kId, db);
+        assertEquals("Dorofeji Ask", k3.getFullName());
+        assertEquals("Jarosławowo",  k3.getCity());
+
+        k2.delete();
+
+        Throwable except = checkIfDeleted( db -> new Karateka(kId, db) );
+        assertEquals(ObjectNotFoundException.class,     except.getClass());
+        assertEquals("No Karateka found for id: " + kId,  except.getMessage());
+    }
 }

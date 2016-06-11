@@ -4,11 +4,11 @@
  *******************************************************************************
  *
  *  NAME
- *      ResultSetSerializer.java
+ *      MartialDatabase.java
  *
  *  DESCRIPTION
- *      ResultSetSerializer class
- *  
+ *      Main db class
+ *
  *  NOTE
  *      Download sqlite-jdbc-[ver].jar and put it into Tomcat ${catalina.home} lib,
  *      also create ${catalina.home}/dbs directory.

@@ -27,12 +27,14 @@ public class PresenceSerializerTest extends Common {
             @SuppressWarnings("unchecked")
             Map<String, List<Map<String, Object>>> test = mapper.readValue(serialized, Map.class);
             assertEquals(2, test.keySet().size());
-            assertEquals("karatekaId", test.get("fields").get(0).get("name"));
+            assertEquals("id", test.get("fields").get(0).get("name"));
             assertEquals(4, test.get("fields").get(0).get("type"));
-            assertEquals("period", test.get("fields").get(1).get("name"));
-            assertEquals(12, test.get("fields").get(1).get("type"));
+            assertEquals("karatekaId", test.get("fields").get(1).get("name"));
+            assertEquals(4, test.get("fields").get(1).get("type"));
             assertEquals("start", test.get("fields").get(2).get("name"));
             assertEquals(91, test.get("fields").get(2).get("type"));
+            assertEquals("period", test.get("fields").get(3).get("name"));
+            assertEquals(12, test.get("fields").get(3).get("type"));
 
             assertEquals(8, test.get("records").size());
             assertEquals(1, test.get("records").get(0).get("karatekaId"));

@@ -27,12 +27,12 @@ public class EventSerializerTest extends Common {
             @SuppressWarnings("unchecked")
             Map<String, List<Map<String, Object>>> test = mapper.readValue(serialized, Map.class);
             assertEquals(test.keySet().size(), 2);
-            assertEquals(test.get("fields").get(0).get("name"), "date");
-            assertEquals(test.get("fields").get(0).get("type"), 91);
-            assertEquals(test.get("fields").get(1).get("name"), "name");
-            assertEquals(test.get("fields").get(1).get("type"), 12);
-            assertEquals(test.get("fields").get(3).get("name"), "cityId");
-            assertEquals(test.get("fields").get(3).get("type"), 4);
+            assertEquals(test.get("fields").get(1).get("name"), "cityId");
+            assertEquals(test.get("fields").get(1).get("type"), 4);
+            assertEquals(test.get("fields").get(2).get("name"), "name");
+            assertEquals(test.get("fields").get(2).get("type"), 12);
+            assertEquals(test.get("fields").get(3).get("name"), "date");
+            assertEquals(test.get("fields").get(3).get("type"), 91);
             assertEquals(test.get("records").size(), 3);
             assertEquals(test.get("records").get(0).get("name"), "14ty staż w Krakowie");
             assertEquals(test.get("records").get(0).get("id"), 1);

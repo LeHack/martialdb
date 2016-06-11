@@ -48,8 +48,7 @@ public class CityTest extends Common {
     }
 
     @Test
-    public final void testSave() throws ObjectNotFoundException {
-        // add new city
+    public final void testSaveAndDelete() throws ObjectNotFoundException {
         City c = new City(db).set("name", "Wąchock");
         assertEquals(c.getName(), "Wąchock");
         c.save();
@@ -61,7 +60,14 @@ public class CityTest extends Common {
         c2.set("name", "New York");
         c2.save();
 
+        // check update
         City c3 = new City(3, db);
         assertEquals(c3.getName(), "New York");
-}
+
+        c2.delete();
+
+        Throwable except = checkIfDeleted( db -> new City(3, db) );
+        assertEquals(ObjectNotFoundException.class, except.getClass());
+        assertEquals("No City found for id: 3",     except.getMessage());
+    }
 }

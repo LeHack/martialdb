@@ -2,9 +2,11 @@ package pl.martialdb.app.model;
 
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseFilter;
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.db.MartialDatabase;
 
 public class PresenceCollection extends BaseCollection {
@@ -20,6 +22,10 @@ public class PresenceCollection extends BaseCollection {
     // Single object collection
     public PresenceCollection(Presence p) {
         super(p);
+    }
+    // Collection of existing objects
+    public PresenceCollection(List<BaseModel> plist) {
+        super(plist);
     }
 
     @Override
