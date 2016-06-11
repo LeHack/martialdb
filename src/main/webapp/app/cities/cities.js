@@ -128,12 +128,12 @@ var app = angular.module('app').controller("CitiesController", function ($scope,
         });
 
         modalInstance.result.then(function (entity) {
-            if (entity.id != '0') {
-                row.entity = angular.copy(entity);
-            } else {
-                entity.id = 100; // get it from database
-                vm.martialGrid.data.push(entity);
-            }
+//            if (entity.id != '0') {
+//                row.entity = angular.copy(entity);
+//            } else {
+//                entity.id = 100; // get it from database
+//                vm.martialGrid.data.push(entity);
+//            }
             
             var req = {
                'method': 'POST',
@@ -144,11 +144,9 @@ var app = angular.module('app').controller("CitiesController", function ($scope,
                'data': angular.toJson( { 'records' : [ entity ] }, true)
             };
             $http(req).success(function (data, status, headers, config) {
-                if (0 === data.status) {
-                    loadCities();
-                }
+                loadCities();
             }).error(function (data, status, headers, config) {
-                feedback.danger("Failed to save record", "Error");;
+                feedback.danger("Failed to save record", "Error");
             });
             
         }, function () {

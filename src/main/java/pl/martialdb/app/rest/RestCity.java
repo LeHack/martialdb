@@ -17,8 +17,12 @@
  */
 package pl.martialdb.app.rest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,6 +30,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import pl.martialdb.app.common.BaseModel;
 import pl.martialdb.app.common.BaseRest;
 import pl.martialdb.app.exceptions.MethodNotSupportedException;
 import pl.martialdb.app.exceptions.ObjectNotFoundException;
@@ -49,13 +54,14 @@ public class RestCity extends BaseRest {
     }
 
     @POST
-    public Response getObjectById(@FormParam("data") String input) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response getObjectById(final String input) {
         Response resp = Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
         if ( webSession.hasRoles(httpRequest) ){
             String data = Json.createObjectBuilder().add("record", "saved").build().toString();
             try {
                 CommonSerializer cs = new CommonSerializer();
-                CityCollection cc = new CityCollection();
+                CityCollection cc = new CityCollection(new ArrayList<BaseModel>());
                 cs.fromJSON( cc, input );
                 cc.save();
             } catch (NumberFormatException | ObjectNotFoundException e) {

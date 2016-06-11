@@ -30,11 +30,11 @@ public class CitySerializer extends BaseObjectSerializer {
     public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) throws NumberFormatException, ObjectNotFoundException {
         for (Map<String, Object> rec : test.get("records")) {
             City c;
-            if (rec.containsKey("id") && !"0".equals( rec.get("id") )) {
-                c = new City( Integer.valueOf( (String)rec.get("id") ) );
+            if (rec.containsKey("id") && (int)rec.get("id") != 0 ) {
+                c = new City( (int)rec.get("id") );
             }
             else {
-                c = new City();;
+                c = new City();
             }
 
             c.set("name", rec.get("name"));
