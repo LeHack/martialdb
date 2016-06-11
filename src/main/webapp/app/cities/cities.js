@@ -133,7 +133,24 @@ var app = angular.module('app').controller("CitiesController", function ($scope,
             } else {
                 entity.id = 100; // get it from database
                 vm.martialGrid.data.push(entity);
-             }
+            }
+            
+            var req = {
+               'method': 'POST',
+               'url': 'rs/city',
+               'headers': {
+                   'Content-Type': 'application/json'
+                },
+               'data': angular.toJson( { 'records' : [ entity ] }, true)
+            };
+            $http(req).success(function (data, status, headers, config) {
+                if (0 === data.status) {
+                    loadCities();
+                }
+            }).error(function (data, status, headers, config) {
+                feedback.danger("Failed to save record", "Error");;
+            });
+            
         }, function () {
         });
     };
