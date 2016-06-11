@@ -36,7 +36,7 @@ public abstract class BaseRest {
     protected static final Logger appLog = Logger.getLogger("appLog");
 
     @Context
-    private HttpServletRequest httpRequest;
+    public HttpServletRequest httpRequest;
 
     @GET
     public Response getAllObjects() {

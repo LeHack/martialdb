@@ -1,6 +1,9 @@
 package pl.martialdb.app.serialize;
 
+
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
@@ -21,5 +24,17 @@ public class CitySerializer extends BaseObjectSerializer {
         jgen.writeNumberField("id",   c.getId());
         jgen.writeStringField("name", c.getName());
         jgen.writeEndObject();
+    }
+
+    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) {
+        for (Map<String, Object> rec : test.get("records")) {
+            City c = new City().set("name", rec.get("name"));
+            if (rec.containsKey("id") && !"0".equals( rec.get("id") )) {
+                c.set("id", rec.get("id"));
+            }
+            newObjs.add(c);
+        }
+
+        return newObjs;
     }
 }
