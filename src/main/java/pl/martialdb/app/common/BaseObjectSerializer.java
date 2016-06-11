@@ -15,6 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
+
 public abstract class BaseObjectSerializer extends StdSerializer<BaseCollection> {
     private static final long serialVersionUID = -3899394742808676840L;
     protected final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -33,7 +35,7 @@ public abstract class BaseObjectSerializer extends StdSerializer<BaseCollection>
         jgen.writeEndArray();
     }
 
-    public BaseCollection deserialize(String input, BaseCollection newCollection) throws JsonParseException, JsonMappingException, IOException {
+    public BaseCollection deserialize(String input, BaseCollection newCollection) throws JsonParseException, JsonMappingException, IOException, NumberFormatException, ObjectNotFoundException {
         ObjectMapper mapper = new ObjectMapper();
 
         @SuppressWarnings("unchecked")
@@ -43,6 +45,6 @@ public abstract class BaseObjectSerializer extends StdSerializer<BaseCollection>
         return newCollection;
     }
 
-    public abstract BaseCollection deserializeInto(BaseCollection newCollection, Map<String, List<Map<String, Object>>> test);
+    public abstract BaseCollection deserializeInto(BaseCollection newCollection, Map<String, List<Map<String, Object>>> test) throws NumberFormatException, ObjectNotFoundException;
     public abstract void mapObject(Object c, JsonGenerator jgen) throws IOException;
 }

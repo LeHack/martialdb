@@ -18,6 +18,7 @@
 package pl.martialdb.app.rest;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -52,10 +53,16 @@ public class RestCity extends BaseRest {
         Response resp = Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
         if ( webSession.hasRoles(httpRequest) ){
             String data = Json.createObjectBuilder().add("record", "saved").build().toString();
-            CommonSerializer cs = new CommonSerializer();
-            CityCollection cc   = new CityCollection();
-            cs.fromJSON( cc, input );
-            cc.save();
+            try {
+                CommonSerializer cs = new CommonSerializer();
+                CityCollection cc = new CityCollection();
+                cs.fromJSON( cc, input );
+                cc.save();
+            } catch (NumberFormatException | ObjectNotFoundException e) {
+                appLog.debug("Error while trying to find record in db: " + e.getMessage());
+                JsonObject json = Json.createObjectBuilder().add("record", "save failed: " + e.getMessage()).build();
+                data = json.toString();
+            }
             resp = Response.status(Response.Status.OK).entity( data ).build();
         }
         return resp;

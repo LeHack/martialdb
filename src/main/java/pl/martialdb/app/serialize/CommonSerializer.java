@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseMetaData;
 import pl.martialdb.app.common.BaseObjectSerializer;
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.exceptions.UnhandledTypeException;
 
 public class CommonSerializer {
@@ -49,7 +50,7 @@ public class CommonSerializer {
         return stringWriter.toString();
     }
 
-    public void fromJSON(BaseCollection obj, String input) {
+    public void fromJSON(BaseCollection obj, String input) throws NumberFormatException, ObjectNotFoundException {
         // use SerializerFactory to get instances of the correct object and MetaData serializer
         try {
             SerializerFactory.getSerializerClass(obj).deserialize(input, obj);

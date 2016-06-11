@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseObjectSerializer;
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.City;
 
 public class CitySerializer extends BaseObjectSerializer {
@@ -26,12 +27,17 @@ public class CitySerializer extends BaseObjectSerializer {
         jgen.writeEndObject();
     }
 
-    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) {
+    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) throws NumberFormatException, ObjectNotFoundException {
         for (Map<String, Object> rec : test.get("records")) {
-            City c = new City().set("name", rec.get("name"));
+            City c;
             if (rec.containsKey("id") && !"0".equals( rec.get("id") )) {
-                c.set("id", rec.get("id"));
+                c = new City( Integer.valueOf( (String)rec.get("id") ) );
             }
+            else {
+                c = new City();;
+            }
+
+            c.set("name", rec.get("name"));
             newObjs.add(c);
         }
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 import pl.martialdb.app.common.BaseCollection;
 import pl.martialdb.app.common.BaseObjectSerializer;
+import pl.martialdb.app.exceptions.ObjectNotFoundException;
 import pl.martialdb.app.model.Presence;
 
 public class PresenceSerializer extends BaseObjectSerializer {
@@ -28,7 +29,7 @@ public class PresenceSerializer extends BaseObjectSerializer {
         jgen.writeEndObject();
     }
 
-    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) {
+    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) throws NumberFormatException, ObjectNotFoundException {
         // STUB
         return newObjs;
     }
