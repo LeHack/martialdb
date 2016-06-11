@@ -25,6 +25,10 @@ public abstract class BaseCollection {
         data.addAll( objects );
     }
 
+    public void add(BaseModel singleObject) {
+        data.add( singleObject );
+    }
+
     public BaseCollection(MartialDatabase db, BaseMetaData meta) {
         this.db = db;
         try {

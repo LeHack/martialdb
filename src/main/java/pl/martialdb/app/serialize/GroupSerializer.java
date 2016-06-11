@@ -1,6 +1,8 @@
 package pl.martialdb.app.serialize;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
@@ -22,5 +24,10 @@ public class GroupSerializer extends BaseObjectSerializer {
         jgen.writeNumberField("cityId",     g.getCityId());
         jgen.writeStringField("name",       g.getName());
         jgen.writeEndObject();
+    }
+
+    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) {
+        // STUB
+        return newObjs;
     }
 }

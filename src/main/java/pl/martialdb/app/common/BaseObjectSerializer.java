@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
@@ -28,5 +33,16 @@ public abstract class BaseObjectSerializer extends StdSerializer<BaseCollection>
         jgen.writeEndArray();
     }
 
+    public BaseCollection deserialize(String input, BaseCollection newCollection) throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        @SuppressWarnings("unchecked")
+        Map<String, List<Map<String, Object>>> test = mapper.readValue(input, Map.class);
+        deserializeInto(newCollection, test);
+
+        return newCollection;
+    }
+
+    public abstract BaseCollection deserializeInto(BaseCollection newCollection, Map<String, List<Map<String, Object>>> test);
     public abstract void mapObject(Object c, JsonGenerator jgen) throws IOException;
 }

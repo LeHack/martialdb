@@ -1,5 +1,6 @@
 package pl.martialdb.app.serialize;
 
+
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -46,5 +47,16 @@ public class CommonSerializer {
         }
 
         return stringWriter.toString();
+    }
+
+    public void fromJSON(BaseCollection obj, String input) {
+        // use SerializerFactory to get instances of the correct object and MetaData serializer
+        try {
+            SerializerFactory.getSerializerClass(obj).deserialize(input, obj);
+        } catch (IOException e) {
+            appLog.error("I/O Error while deserializing object: ", e);
+        } catch (UnhandledTypeException e) {
+            appLog.error("Unkown type while deserializing object: ", e);
+        }
     }
 }

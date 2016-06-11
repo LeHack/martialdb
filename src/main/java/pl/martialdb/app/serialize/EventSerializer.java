@@ -1,6 +1,8 @@
 package pl.martialdb.app.serialize;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
@@ -24,5 +26,10 @@ public class EventSerializer extends BaseObjectSerializer {
         jgen.writeStringField("date",       dateFormat.format( e.getDate() ));
         jgen.writeStringField("type",       e.getType().toString());
         jgen.writeEndObject();
+    }
+
+    public BaseCollection deserializeInto(BaseCollection newObjs, Map<String, List<Map<String, Object>>> test) {
+        // STUB
+        return newObjs;
     }
 }
